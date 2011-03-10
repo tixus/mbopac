@@ -1,0 +1,97 @@
+<!DOCTYPE ui:UiBinder SYSTEM 'http://dl.google.com/gwt/DTD/xhtml.ent'>
+<ui:UiBinder
+  xmlns:ui='urn:ui:com.google.gwt.uibinder'
+  xmlns:g='urn:import:com.google.gwt.user.client.ui'
+  xmlns:d='urn:import:com.google.gwt.user.datepicker.client'
+  ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
+  ui:generateLocales='default'>
+
+  <ui:style>
+    .header {
+      font-size: 110%;
+      font-weight: bold;
+      color: #555
+    }
+    
+    .label {
+      font-weight: bold;
+    }
+  </ui:style>
+
+  <g:DecoratorPanel>
+    <g:HTMLPanel>
+      <table>
+        <tr>
+          <td
+            colspan='2'
+            align='center'
+            class='{style.header}'>
+            <ui:msg
+              key='mediaItemTitle'>Medien-Eintrag</ui:msg>
+          </td>
+        </tr>
+        <tr>
+          <td
+            class='{style.label}'>
+            <ui:msg
+              key='error'>Fehler:</ui:msg>
+          </td>
+          <td>
+            <g:Label
+              ui:field='errorLabel' />
+          </td>
+        </tr>
+        <tr>
+          <td
+            class='{style.label}'>
+            <ui:msg
+              key='mediaNumberBox'>Mediennummer:</ui:msg>
+          </td>
+          <td>
+            <g:TextBox
+              ui:field='mediaNumberBox' />
+          </td>
+        </tr>
+        <tr>
+          <td
+            class='{style.label}'>
+            <ui:msg
+              key='titleBox'>Titel:</ui:msg>
+          </td>
+          <td>
+            <g:TextBox
+              ui:field='titleBox' />
+          </td>
+        </tr>
+        <tr>
+          <td
+            class='{style.label}'>
+            <ui:msg
+              key='shortDescriptionBox'>Kurzbeschreibung:</ui:msg>
+          </td>
+          <td>
+            <g:TextArea
+              ui:field='shortDescriptionBox' />
+          </td>
+        </tr>
+        <tr>
+          <td
+            colspan='2'
+            align='center'>
+            <g:Button
+              ui:field='lendButton'>
+              <ui:msg
+                key='lendingFormLendButton'>Ausleihen</ui:msg>
+            </g:Button>
+              &nbsp;
+            <g:Button
+              ui:field='endLendingButton'>
+              <ui:msg
+                key='lendingFormEndLendingButton'>Zurückgeben</ui:msg>
+            </g:Button>
+          </td>
+        </tr>
+      </table>
+    </g:HTMLPanel>
+  </g:DecoratorPanel>
+</ui:UiBinder>
