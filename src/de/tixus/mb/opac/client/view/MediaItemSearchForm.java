@@ -15,7 +15,6 @@
  */
 package de.tixus.mb.opac.client.view;
 
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -80,10 +79,12 @@ public class MediaItemSearchForm extends Composite {
     yearBox.setFormat(new DateBox.DefaultFormat(dateFormat));
     // FIXME put into persistent field
 
+    genreBox.addItem("alle");
     for (final String genre : genres) {
       genreBox.addItem(genre);
     }
 
+    mediaKindBox.addItem("alle");
     final MediaKind[] values = MediaKind.values();
     for (final MediaKind mediaKind : values) {
       mediaKindBox.addItem(mediaKind.getDescription());
@@ -96,18 +97,21 @@ public class MediaItemSearchForm extends Composite {
         final String mediaNumber = mediaNumberBox.getText();
         final String title = titleBox.getText();
         final String text = authorBox.getText();
-        if (!FieldVerifier.isWhiteSpaceSeparatedName(text)) {
-          errorLabel.setText("Bitte Vor- und Nachnamen eingeben. (z.B. Max Frisch)");
-          return;
+        final Author author;
+        if (!text.isEmpty()) {
+          if (!FieldVerifier.isWhiteSpaceSeparatedName(text)) {
+            errorLabel.setText("Bitte Vor- und Nachnamen eingeben. (z.B. Max Frisch)");
+            return;
+          }
+          final String[] split = text.split(" ");
+          author = new Author(split[0], split[1]);
+        } else {
+          author = null;
         }
-        final String[] split = text.split(" ");
-        final Author author = new Author(split[0], split[1]);
 
         final Date publicationYear = yearBox.getValue();
         final MediaKind selectedMediaKind = getMediaKind();
-        // FIXME list to set
-        final int categoryIndex = genreBox.getSelectedIndex();
-        final Set<String> genreSet = new HashSet<String>(Arrays.asList(genres[categoryIndex]));
+        final Set<String> genreSet = getGenre();
         mediaItemController.search(mediaNumber, title, author, publicationYear, selectedMediaKind, genreSet);
       }
 
@@ -126,6 +130,25 @@ public class MediaItemSearchForm extends Composite {
     });
   }
 
+  private Set<String> getGenre() {
+    final Set<String> genreSet = new HashSet<String>();
+    // start at 1 skipping "alle" item
+    for (int i = 1; i < genreBox.getItemCount(); i++) {
+      if (genreBox.isItemSelected(i)) {
+        genreSet.add(genres[i - 1]);
+      }
+    }
+
+    if (genreSet.isEmpty()) {
+      return null;
+    } else {
+      return genreSet;
+    }
+  }
+
+  /**
+   * @return null if all kinds are requested
+   */
   private MediaKind getMediaKind() {
     final String mediaKindValue = mediaKindBox.getValue(mediaKindBox.getSelectedIndex());
     final MediaKind[] values = MediaKind.values();

@@ -50,4 +50,6 @@ public interface PersistenceServiceAsync {
               final Set<String> genreSet,
               AsyncCallback<List<MediaItem>> asyncCallback);
 
+  void setUp(AsyncCallback<Void> callback);
+
 }

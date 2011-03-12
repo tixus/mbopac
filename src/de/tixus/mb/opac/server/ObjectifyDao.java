@@ -114,12 +114,13 @@ public class ObjectifyDao {
       final Map.Entry entry = (Map.Entry) iterator.next();
 
       final Object value = entry.getValue();
-      if (value == null) {
+      if (value == null || "".equals(value)) {
         continue;
       }
 
       query.filter(entry.getKey().toString(), entry.getValue());
     }
+
     final List<MediaItem> list = query.list();
 
     return list;

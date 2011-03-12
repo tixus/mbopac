@@ -22,7 +22,7 @@ public enum MediaKind {
 
     @Override
     public String getDescription() {
-      return "Groﬂdruck";
+      return "Gro\u00DFdruck";
     }
   },
   CompactDisc {

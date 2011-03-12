@@ -30,7 +30,7 @@ public class PersistenceServiceImpl extends RemoteServiceServlet implements Pers
   public PersistenceServiceImpl() {
   }
 
-  public void clear() {
+  public void setUp() {
     dataImporter.clear();
     dataImporter.importMediaItemData();
     dataImporter.importPersonData();
@@ -122,12 +122,21 @@ public class PersistenceServiceImpl extends RemoteServiceServlet implements Pers
                                 final Set<String> genreSet) {
 
     final Map filterMap = new HashMap();
+    // exakt match
     filterMap.put("mediaNumber", mediaNumber);
-    filterMap.put("title", title);
-    filterMap.put("author", author);
+    // like match
+    if (title != null) {
+      // http://googlecode.blogspot.com/2010/05/google-app-engine-basic-text-search.html
+      filterMap.put("title >=", title);
+      filterMap.put("title <", title + "\ufffd");
+    }
+    if (author != null) {
+      filterMap.put("author.firstName", author.getFirstName());
+      filterMap.put("author.lastName", author.getLastName());
+    }
     filterMap.put("publicationYear", publicationYear);
-    filterMap.put("mediaKind", mediaKind);
-    filterMap.put("genre IN", genreSet);
+    filterMap.put("kind", mediaKind);
+    filterMap.put("genres IN", genreSet);
 
     return dao.find(MediaItem.class, filterMap);
   }

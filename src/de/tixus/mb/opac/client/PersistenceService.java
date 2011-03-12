@@ -43,10 +43,23 @@ public interface PersistenceService extends RemoteService {
 
   <T extends Serializable> T get(Key<T> key);
 
+  /**
+   * Performs an search with "AND" all non-null non-empty parameters.
+   * 
+   * @param mediaNumber
+   * @param title
+   * @param author
+   * @param publicationYear
+   * @param selectedMediaKind
+   * @param genreSet
+   * @return
+   */
   List<MediaItem> search(String mediaNumber,
                          String title,
                          Author author,
                          Date publicationYear,
                          MediaKind selectedMediaKind,
                          Set<String> genreSet);
+
+  void setUp();
 }

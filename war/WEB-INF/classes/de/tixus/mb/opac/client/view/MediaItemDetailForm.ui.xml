@@ -1,0 +1,112 @@
+<!DOCTYPE ui:UiBinder SYSTEM 'http://dl.google.com/gwt/DTD/xhtml.ent'>
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui' xmlns:d='urn:import:com.google.gwt.user.datepicker.client'
+	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
+	ui:generateLocales='default'>
+
+	<ui:style>
+		.header {
+			font-size: 110%;
+			font-weight: bold;
+			color: #555
+		}
+		
+		.label {
+			font-weight: bold;
+		}
+	</ui:style>
+
+	<g:HTMLPanel>
+		<table>
+			<tr>
+				<td colspan='2' align='center' class='{style.header}'>
+					<ui:msg key='mediaItemTitle'>Medien-Eintrag</ui:msg>
+				</td>
+			</tr>
+			<tr>
+				<td class='{style.label}'>
+					<ui:msg key='error'>Information:</ui:msg>
+				</td>
+				<td>
+					<g:Label ui:field='errorLabel' />
+				</td>
+			</tr>
+			<tr>
+				<td class='{style.label}'>
+					<ui:msg key='mediaNumberBox'>Mediennummer:</ui:msg>
+				</td>
+				<td>
+					<g:TextBox ui:field='mediaNumberBox' />
+				</td>
+			</tr>
+			<tr>
+				<td class='{style.label}'>
+					<ui:msg key='authorBox'>Autor</ui:msg>
+				</td>
+				<td>
+					<g:TextBox ui:field='authorBox' />
+				</td>
+			</tr>
+			<tr>
+				<td class='{style.label}'>
+					<ui:msg key='titleBox'>Titel:</ui:msg>
+				</td>
+				<td>
+					<g:TextBox ui:field='titleBox' />
+				</td>
+			</tr>
+			<tr>
+				<td class='{style.label}'>
+					<ui:msg key='shortDescriptionBox'>Kurzbeschreibung:</ui:msg>
+				</td>
+				<td>
+					<g:TextArea ui:field='shortDescriptionBox' />
+				</td>
+			</tr>
+			<tr>
+				<td class='{style.label}'>
+					<ui:msg key='yearBox'>Erscheinungsjahr:</ui:msg>
+				</td>
+				<td>
+					<d:DateBox ui:field='yearBox' />
+				</td>
+			</tr>
+			<tr>
+				<td class='{style.label}'>
+					<ui:msg key='mediaKindBox'>Medientyp:</ui:msg>
+				</td>
+				<td>
+					<g:ListBox ui:field='mediaKindBox' />
+				</td>
+			</tr>
+			<tr>
+				<td class='{style.label}'>
+					<ui:msg key='genreBox'>Genre:</ui:msg>
+				</td>
+				<td>
+					<g:ListBox ui:field='genreBox' />
+				</td>
+			</tr>
+			<tr>
+				<td class='{style.label}'>
+					<ui:msg key='lentLabel'>Ausleihstatus:</ui:msg>
+				</td>
+				<td>
+					<g:Label ui:field='lentLabel' />
+				</td>
+			</tr>
+			<tr>
+				<td colspan='2' align='center'>
+					<g:Button ui:field='createButton'>
+						<ui:msg key='contactInfoFormCreateButton'>Neu</ui:msg>
+					</g:Button>
+					&nbsp;
+					<g:Button ui:field='updateButton'>
+						<ui:msg key='contactInfoFormUpdateButton'>Speichern</ui:msg>
+					</g:Button>
+					&nbsp;
+				</td>
+			</tr>
+		</table>
+	</g:HTMLPanel>
+</ui:UiBinder>

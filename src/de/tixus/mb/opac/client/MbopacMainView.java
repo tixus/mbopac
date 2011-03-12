@@ -14,6 +14,7 @@ import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.cellview.client.HasKeyboardPagingPolicy.KeyboardPagingPolicy;
 import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
@@ -56,7 +57,18 @@ public class MbopacMainView implements EntryPoint {
    * This is the entry point method.
    */
   public void onModuleLoad() {
-    persistenceService.clear();
+    persistenceService.setUp(new AsyncCallback<Void>() {
+
+      @Override
+      public void onSuccess(final Void result) {
+
+      }
+
+      @Override
+      public void onFailure(final Throwable caught) {
+        throw new RuntimeException(caught);
+      }
+    });
 
     // Master detail view on media items
     final HandlerManager eventBus = new HandlerManager(null);
@@ -95,7 +107,7 @@ public class MbopacMainView implements EntryPoint {
 
     // Full catalog entries and detail for media item. 
     final SplitLayoutPanel catalogPanel = new SplitLayoutPanel();
-    catalogPanel.addNorth(mediaItemSearchForm, 200);
+    catalogPanel.addNorth(mediaItemSearchForm, 300);
     catalogPanel.addWest(catalogPagerPanel, 700);
     catalogPanel.add(mediaItemDetailForm);
 
