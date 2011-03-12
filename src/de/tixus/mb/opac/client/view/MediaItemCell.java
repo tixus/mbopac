@@ -5,7 +5,7 @@ import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
 
 import de.tixus.mb.opac.client.MbopacMainView.Images;
-import de.tixus.mb.opac.client.entities.MediaItem;
+import de.tixus.mb.opac.shared.entities.MediaItem;
 
 public class MediaItemCell extends AbstractCell<MediaItem> {
 

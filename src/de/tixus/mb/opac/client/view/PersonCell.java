@@ -9,8 +9,8 @@ import com.google.gwt.user.client.ui.AbstractImagePrototype;
 
 import de.tixus.mb.opac.client.MbopacMainView;
 import de.tixus.mb.opac.client.MbopacMainView.Images;
-import de.tixus.mb.opac.client.entities.Gender;
-import de.tixus.mb.opac.client.entities.Person;
+import de.tixus.mb.opac.shared.entities.Gender;
+import de.tixus.mb.opac.shared.entities.Person;
 
 /**
  * @author TSP

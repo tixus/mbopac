@@ -30,8 +30,8 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 
-import de.tixus.mb.opac.client.entities.MediaItem;
 import de.tixus.mb.opac.client.presenter.MediaItemController;
+import de.tixus.mb.opac.shared.entities.MediaItem;
 
 /**
  * A form used for editing persons.

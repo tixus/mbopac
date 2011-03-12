@@ -12,7 +12,6 @@
 
 	<!-- Other module inherits -->
 	<inherits name="com.googlecode.objectify.Objectify" />
-	<inherits name="com.smartgwt.SmartGwt" />
 	
 	<!-- Specify the app entry point class. -->
 	<entry-point class='de.tixus.mb.opac.client.MbopacMainView' />

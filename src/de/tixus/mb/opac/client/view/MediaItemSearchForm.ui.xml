@@ -20,7 +20,7 @@
 		<table>
 			<tr>
 				<td colspan='2' align='center' class='{style.header}'>
-					<ui:msg key='mediaItemTitle'>Medien-Eintrag</ui:msg>
+					<ui:msg key='mediaItemTitle'>Medien-Eintrag suchen</ui:msg>
 				</td>
 			</tr>
 			<tr>
@@ -57,14 +57,6 @@
 			</tr>
 			<tr>
 				<td class='{style.label}'>
-					<ui:msg key='shortDescriptionBox'>Kurzbeschreibung:</ui:msg>
-				</td>
-				<td>
-					<g:TextArea ui:field='shortDescriptionBox' />
-				</td>
-			</tr>
-			<tr>
-				<td class='{style.label}'>
 					<ui:msg key='yearBox'>Erscheinungsjahr:</ui:msg>
 				</td>
 				<td>
@@ -97,12 +89,12 @@
 			</tr>
 			<tr>
 				<td colspan='2' align='center'>
-					<g:Button ui:field='createButton'>
-						<ui:msg key='contactInfoFormCreateButton'>Neu</ui:msg>
+					<g:Button ui:field='searchButton'>
+						<ui:msg key='mediaItemSearchFormSearchButton'>Suche</ui:msg>
 					</g:Button>
 					&nbsp;
-					<g:Button ui:field='updateButton'>
-						<ui:msg key='contactInfoFormUpdateButton'>Speichern</ui:msg>
+					<g:Button ui:field='clearButton'>
+						<ui:msg key='mediaItemSearchFormClearButton'>Neue Suche</ui:msg>
 					</g:Button>
 					&nbsp;
 				</td>

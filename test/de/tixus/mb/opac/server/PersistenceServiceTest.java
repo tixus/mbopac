@@ -3,9 +3,14 @@
  */
 package de.tixus.mb.opac.server;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import junit.framework.Assert;
 
@@ -17,10 +22,12 @@ import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestC
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 
 import de.tixus.mb.opac.client.PersistenceService;
-import de.tixus.mb.opac.client.entities.Lending;
-import de.tixus.mb.opac.client.entities.MediaItem;
-import de.tixus.mb.opac.client.entities.Person;
 import de.tixus.mb.opac.factory.ObjectifyTestFactory;
+import de.tixus.mb.opac.shared.entities.Author;
+import de.tixus.mb.opac.shared.entities.Lending;
+import de.tixus.mb.opac.shared.entities.MediaItem;
+import de.tixus.mb.opac.shared.entities.MediaKind;
+import de.tixus.mb.opac.shared.entities.Person;
 
 /**
  * @author TSP
@@ -73,6 +80,34 @@ public class PersistenceServiceTest {
     //    for (final Person person : listAllPersons) {
     //    persistenceService.listAllLendings();
     //    Assert.assertFalse(allMediaItems.isEmpty());
+  }
+
+  /**
+   * Test method for
+   * {@link de.tixus.mb.opac.server.PersistenceServiceImpl#search(String, String, de.tixus.mb.opac.shared.entities.Author, java.util.Date, de.tixus.mb.opac.shared.entities.MediaKind, java.util.Set)}
+   * .
+   */
+  @Test
+  public void testSearch() {
+    String mediaNumber = null;
+    final String title = null;
+    final Author author = null;
+    final Date publicationYear = null;
+    final MediaKind selectedMediaKind = null;
+    final Set<String> genreSet = null;
+    // null test
+    final List<MediaItem> emptySearchResult = persistenceService.search(mediaNumber, title, author, publicationYear, selectedMediaKind,
+                                                                        genreSet);
+
+    assertTrue(emptySearchResult.isEmpty());
+
+    mediaNumber = "M123456789";
+    final List<MediaItem> singleSearchResult = persistenceService.search(mediaNumber, title, author, publicationYear, selectedMediaKind,
+                                                                         genreSet);
+    assertFalse(singleSearchResult.isEmpty());
+    assertEquals(1, singleSearchResult.size());
+    assertEquals(mediaNumber, singleSearchResult.get(0).getMediaNumber());
+
   }
 
   /**

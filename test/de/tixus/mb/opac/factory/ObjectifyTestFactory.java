@@ -6,13 +6,13 @@ import java.util.UUID;
 
 import com.googlecode.objectify.Key;
 
-import de.tixus.mb.opac.client.entities.Author;
-import de.tixus.mb.opac.client.entities.Gender;
-import de.tixus.mb.opac.client.entities.Lending;
-import de.tixus.mb.opac.client.entities.MediaItem;
-import de.tixus.mb.opac.client.entities.MediaKind;
-import de.tixus.mb.opac.client.entities.Person;
-import de.tixus.mb.opac.client.entities.TypeOfPerson;
+import de.tixus.mb.opac.shared.entities.Author;
+import de.tixus.mb.opac.shared.entities.Gender;
+import de.tixus.mb.opac.shared.entities.Lending;
+import de.tixus.mb.opac.shared.entities.MediaItem;
+import de.tixus.mb.opac.shared.entities.MediaKind;
+import de.tixus.mb.opac.shared.entities.Person;
+import de.tixus.mb.opac.shared.entities.TypeOfPerson;
 
 public class ObjectifyTestFactory {
 

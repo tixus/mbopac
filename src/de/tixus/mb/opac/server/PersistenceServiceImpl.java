@@ -2,18 +2,21 @@ package de.tixus.mb.opac.server;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import com.googlecode.objectify.Key;
 
 import de.tixus.mb.opac.client.PersistenceService;
-import de.tixus.mb.opac.client.entities.Author;
-import de.tixus.mb.opac.client.entities.Lending;
-import de.tixus.mb.opac.client.entities.MediaItem;
-import de.tixus.mb.opac.client.entities.MediaKind;
-import de.tixus.mb.opac.client.entities.Person;
+import de.tixus.mb.opac.shared.entities.Author;
+import de.tixus.mb.opac.shared.entities.Lending;
+import de.tixus.mb.opac.shared.entities.MediaItem;
+import de.tixus.mb.opac.shared.entities.MediaKind;
+import de.tixus.mb.opac.shared.entities.Person;
 
 /**
  * The server side implementation of the RPC service.
@@ -25,6 +28,10 @@ public class PersistenceServiceImpl extends RemoteServiceServlet implements Pers
   private final DataImporter dataImporter = new DataImporter(dao);
 
   public PersistenceServiceImpl() {
+  }
+
+  public void clear() {
+    dataImporter.clear();
     dataImporter.importMediaItemData();
     dataImporter.importPersonData();
     dataImporter.importLendingData();
@@ -89,6 +96,10 @@ public class PersistenceServiceImpl extends RemoteServiceServlet implements Pers
     dao.update(serializable);
   }
 
+  public <T extends Serializable> T get(final Key<T> key) {
+    return dao.get(key);
+  }
+
   /**
    * Escape an html string. Escaping data received from the client helps to prevent cross-site script vulnerabilities.
    * 
@@ -100,5 +111,24 @@ public class PersistenceServiceImpl extends RemoteServiceServlet implements Pers
       return null;
     }
     return html.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+  }
+
+  @Override
+  public List<MediaItem> search(final String mediaNumber,
+                                final String title,
+                                final Author author,
+                                final Date publicationYear,
+                                final MediaKind mediaKind,
+                                final Set<String> genreSet) {
+
+    final Map filterMap = new HashMap();
+    filterMap.put("mediaNumber", mediaNumber);
+    filterMap.put("title", title);
+    filterMap.put("author", author);
+    filterMap.put("publicationYear", publicationYear);
+    filterMap.put("mediaKind", mediaKind);
+    filterMap.put("genre IN", genreSet);
+
+    return dao.find(MediaItem.class, filterMap);
   }
 }

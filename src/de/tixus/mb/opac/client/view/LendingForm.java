@@ -17,9 +17,9 @@ import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
-import de.tixus.mb.opac.client.entities.Lending;
-import de.tixus.mb.opac.client.entities.MediaItem;
 import de.tixus.mb.opac.client.presenter.LendingController;
+import de.tixus.mb.opac.shared.entities.Lending;
+import de.tixus.mb.opac.shared.entities.MediaItem;
 
 /**
  * @author TSP

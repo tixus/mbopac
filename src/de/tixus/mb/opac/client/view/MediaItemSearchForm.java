@@ -31,7 +31,6 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
@@ -39,17 +38,16 @@ import com.google.gwt.user.datepicker.client.DateBox;
 import de.tixus.mb.opac.client.presenter.MediaItemController;
 import de.tixus.mb.opac.shared.FieldVerifier;
 import de.tixus.mb.opac.shared.entities.Author;
-import de.tixus.mb.opac.shared.entities.MediaItem;
 import de.tixus.mb.opac.shared.entities.MediaKind;
 
 /**
  * A form used for editing media items.
  */
-public class MediaItemDetailForm extends Composite {
+public class MediaItemSearchForm extends Composite {
 
   private static Binder uiBinder = GWT.create(Binder.class);
 
-  interface Binder extends UiBinder<Widget, MediaItemDetailForm> {
+  interface Binder extends UiBinder<Widget, MediaItemSearchForm> {
   }
 
   @UiField
@@ -61,24 +59,21 @@ public class MediaItemDetailForm extends Composite {
   @UiField
   DateBox yearBox;
   @UiField
-  TextArea shortDescriptionBox;
-  @UiField
   ListBox mediaKindBox;
   @UiField
   ListBox genreBox;
   @UiField
-  Button createButton;
+  Button searchButton;
   @UiField
-  Button updateButton;
+  Button clearButton;
   @UiField
   Label lentLabel;
   @UiField
   Label errorLabel;
 
-  private MediaItem mediaItem;
   private final String[] genres = new String[] { "Belletristik", "Krimi", "Technik", "Thriller", "Frauen", "Gesellschaft und Politik" };
 
-  public MediaItemDetailForm(final MediaItemController mediaItemController) {
+  public MediaItemSearchForm(final MediaItemController mediaItemController) {
     initWidget(uiBinder.createAndBindUi(this));
 
     final DateTimeFormat dateFormat = DateTimeFormat.getFormat(PredefinedFormat.YEAR);
@@ -93,96 +88,53 @@ public class MediaItemDetailForm extends Composite {
     for (final MediaKind mediaKind : values) {
       mediaKindBox.addItem(mediaKind.getDescription());
     }
-    // Initialize the contact to null.
-    setItem(null);
 
     // Handle events.
-    updateButton.addClickHandler(new ClickHandler() {
+    searchButton.addClickHandler(new ClickHandler() {
 
       public void onClick(final ClickEvent event) {
-        if (mediaItem == null) {
-          return;
-        }
-        // Update the contact.
-        // TODO more validations
-        mediaItem.mediaNumber = mediaNumberBox.getText();
+        final String mediaNumber = mediaNumberBox.getText();
         final String title = titleBox.getText();
         final String text = authorBox.getText();
         if (!FieldVerifier.isWhiteSpaceSeparatedName(text)) {
-          errorLabel.setText("Bitte Vor- und Nachnamen eingeben.");
+          errorLabel.setText("Bitte Vor- und Nachnamen eingeben. (z.B. Max Frisch)");
           return;
         }
         final String[] split = text.split(" ");
         final Author author = new Author(split[0], split[1]);
 
         final Date publicationYear = yearBox.getValue();
-        final String shortDescription = shortDescriptionBox.getText();
-        // FIXME list to set
-        final MediaKind kind = mediaItem.getKind();
-        mediaKindBox.getSelectedIndex();
+        final MediaKind selectedMediaKind = getMediaKind();
         // FIXME list to set
         final int categoryIndex = genreBox.getSelectedIndex();
         final Set<String> genreSet = new HashSet<String>(Arrays.asList(genres[categoryIndex]));
-
-        mediaItem.update(title, shortDescription, author, publicationYear, kind, genreSet);
-        // Update the views.
-        mediaItemController.update(mediaItem);
+        mediaItemController.search(mediaNumber, title, author, publicationYear, selectedMediaKind, genreSet);
       }
+
     });
 
-    createButton.addClickHandler(new ClickHandler() {
+    clearButton.addClickHandler(new ClickHandler() {
 
       public void onClick(final ClickEvent event) {
-        final String mediaNumber = mediaNumberBox.getText();
-        final String title = titleBox.getText();
-        final String authorText = authorBox.getText();
-        if (!FieldVerifier.isWhiteSpaceSeparatedName(authorText)) {
-          errorLabel.setText("Bitte Vor- und Nachnamen eingeben.");
-          return;
-        }
-        final String[] split = authorText.split(" ");
-        final Author author = new Author(split[0], split[1]);
-        final Date publicationYear = yearBox.getValue();
-        final String shortDescription = shortDescriptionBox.getText();
-        mediaKindBox.getSelectedIndex();
-        // FIXME list to set
-        final int categoryIndex = genreBox.getSelectedIndex();
-        //        final Set<String> genres = new HashSet<String>(Arrays.asList(genres[categoryIndex]));
-
-        final MediaKind kind = null;
-        final Set<String> genreSet = null;
-        // Update the views.
-        final MediaItem createdMediaItem = mediaItemController.createMediaItem(title, mediaNumber, shortDescription, author,
-                                                                               publicationYear, kind, genreSet);
-        setItem(createdMediaItem);
+        mediaNumberBox.setText("");
+        titleBox.setText("");
+        authorBox.setText("");
+        yearBox.setValue(null);
+        mediaKindBox.setSelectedIndex(-1);
+        genreBox.setSelectedIndex(-1);
       }
     });
-
   }
 
-  public void setItem(final MediaItem mediaItem) {
-    this.mediaItem = mediaItem;
-    updateButton.setEnabled(mediaItem != null);
-    if (mediaItem != null) {
-      mediaNumberBox.setText(mediaItem.getMediaNumber());
-      titleBox.setText(mediaItem.getTitle());
-      authorBox.setText(mediaItem.getAuthor().toString());
-      yearBox.setValue(mediaItem.getPublicationYear());
-      shortDescriptionBox.setText(mediaItem.getShortDescription());
-      //      TODO
-      mediaKindBox.setSelectedIndex(0);
-      final Set<String> genres2 = mediaItem.getGenres();
-      if (genres2 != null) {
-        outer: for (final String string : genres2) {
-          for (int i = 0; i < genres.length; i++) {
-            if (string.equals(genres[i])) {
-              genreBox.setSelectedIndex(i);
-              break outer;
-            }
-          }
-        }
+  private MediaKind getMediaKind() {
+    final String mediaKindValue = mediaKindBox.getValue(mediaKindBox.getSelectedIndex());
+    final MediaKind[] values = MediaKind.values();
+    for (final MediaKind mediaKind : values) {
+      if (mediaKindValue.equals(mediaKind.getDescription())) {
+        return mediaKind;
       }
-      lentLabel.setText(mediaItem.isLent() ? "Verliehen" : "Entleihbar");
     }
+
+    return null;
   }
 }

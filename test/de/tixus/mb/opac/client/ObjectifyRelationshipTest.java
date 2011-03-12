@@ -12,10 +12,10 @@ import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyFactory;
 import com.googlecode.objectify.ObjectifyService;
 
-import de.tixus.mb.opac.client.entities.Lending;
-import de.tixus.mb.opac.client.entities.MediaItem;
-import de.tixus.mb.opac.client.entities.Person;
 import de.tixus.mb.opac.factory.ObjectifyTestFactory;
+import de.tixus.mb.opac.shared.entities.Lending;
+import de.tixus.mb.opac.shared.entities.MediaItem;
+import de.tixus.mb.opac.shared.entities.Person;
 
 public class ObjectifyRelationshipTest {
 

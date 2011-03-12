@@ -3,14 +3,17 @@ package de.tixus.mb.opac.client.presenter;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.ListDataProvider;
 
 import de.tixus.mb.opac.client.PersistenceServiceAsync;
-import de.tixus.mb.opac.client.entities.Lending;
-import de.tixus.mb.opac.client.entities.MediaItem;
-import de.tixus.mb.opac.client.entities.Person;
+import de.tixus.mb.opac.client.event.MediaItemUpdatedEvent;
+import de.tixus.mb.opac.shared.entities.Lending;
+import de.tixus.mb.opac.shared.entities.MediaItem;
+import de.tixus.mb.opac.shared.entities.Person;
 
 public class LendingController {
 
@@ -19,8 +22,10 @@ public class LendingController {
    */
   private final ListDataProvider<MediaItem> dataProvider = new ListDataProvider<MediaItem>();
   private final PersistenceServiceAsync persistenceService;
+  private final HandlerManager eventBus;
 
-  public LendingController(final PersistenceServiceAsync persistenceService) {
+  public LendingController(final HandlerManager eventBus, final PersistenceServiceAsync persistenceService) {
+    this.eventBus = eventBus;
     this.persistenceService = persistenceService;
   }
 
@@ -65,7 +70,7 @@ public class LendingController {
 
       @Override
       public void onFailure(final Throwable caught) {
-        throw new RuntimeException(caught);
+        Window.alert("Server-Fehler: " + caught.getMessage());
       }
     });
   }
@@ -78,11 +83,12 @@ public class LendingController {
       @Override
       public void onSuccess(final Lending result) {
         lendingResults.add(result);
+        eventBus.fireEvent(new MediaItemUpdatedEvent(mediaItem.getId()));
       }
 
       @Override
       public void onFailure(final Throwable caught) {
-        throw new RuntimeException(caught);
+        Window.alert("Server-Fehler: " + caught.getMessage());
       }
     });
 

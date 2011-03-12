@@ -7,7 +7,7 @@ import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.ListDataProvider;
 
 import de.tixus.mb.opac.client.PersistenceServiceAsync;
-import de.tixus.mb.opac.client.entities.Person;
+import de.tixus.mb.opac.shared.entities.Person;
 
 public class PersonsController implements Controller<Person> {
 

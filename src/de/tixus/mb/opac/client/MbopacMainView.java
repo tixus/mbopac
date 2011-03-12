@@ -8,6 +8,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
+import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.cellview.client.CellList;
@@ -23,16 +24,17 @@ import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 
-import de.tixus.mb.opac.client.entities.MediaItem;
-import de.tixus.mb.opac.client.entities.Person;
 import de.tixus.mb.opac.client.presenter.LendingController;
 import de.tixus.mb.opac.client.presenter.MediaItemController;
 import de.tixus.mb.opac.client.presenter.PersonsController;
 import de.tixus.mb.opac.client.view.LendingForm;
 import de.tixus.mb.opac.client.view.MediaItemCell;
 import de.tixus.mb.opac.client.view.MediaItemDetailForm;
+import de.tixus.mb.opac.client.view.MediaItemSearchForm;
 import de.tixus.mb.opac.client.view.PersonCell;
 import de.tixus.mb.opac.client.view.ShowMorePagerPanel;
+import de.tixus.mb.opac.shared.entities.MediaItem;
+import de.tixus.mb.opac.shared.entities.Person;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -54,10 +56,13 @@ public class MbopacMainView implements EntryPoint {
    * This is the entry point method.
    */
   public void onModuleLoad() {
+    persistenceService.clear();
+
     // Master detail view on media items
+    final HandlerManager eventBus = new HandlerManager(null);
 
     final Images images = GWT.create(Images.class);
-    final MediaItemController mediaItemController = new MediaItemController(persistenceService);
+    final MediaItemController mediaItemController = new MediaItemController(eventBus, persistenceService);
     final MediaItemDetailForm mediaItemDetailForm = new MediaItemDetailForm(mediaItemController);
     final MediaItemCell mediaItemCell = new MediaItemCell(images);
     // Set a key provider that provides a unique key for each contact. If key is
@@ -86,10 +91,13 @@ public class MbopacMainView implements EntryPoint {
     // current range, but does not have any controls to change the range.
     catalogPagerPanel.setDisplay(catalogCellList);
 
+    final MediaItemSearchForm mediaItemSearchForm = new MediaItemSearchForm(mediaItemController);
+
     // Full catalog entries and detail for media item. 
     final SplitLayoutPanel catalogPanel = new SplitLayoutPanel();
-    catalogPanel.addEast(mediaItemDetailForm, 384);
-    catalogPanel.add(catalogPagerPanel);
+    catalogPanel.addNorth(mediaItemSearchForm, 200);
+    catalogPanel.addWest(catalogPagerPanel, 700);
+    catalogPanel.add(mediaItemDetailForm);
 
     // A person's lending items overview and new lending actions.
     final SplitLayoutPanel accountPanel = new SplitLayoutPanel();
@@ -98,7 +106,7 @@ public class MbopacMainView implements EntryPoint {
     final SplitLayoutPanel accountDetailPanel = new SplitLayoutPanel();
     final ShowMorePagerPanel accoutLentItemsPanel = new ShowMorePagerPanel();
 
-    final LendingController lendingController = new LendingController(persistenceService);
+    final LendingController lendingController = new LendingController(eventBus, persistenceService);
 
     final CellList<MediaItem> lentItemsList = new CellList<MediaItem>(mediaItemCell, MEDIA_ITEM_KEY_PROVIDER);
     accoutLentItemsPanel.setDisplay(lentItemsList);

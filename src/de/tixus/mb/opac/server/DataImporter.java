@@ -7,13 +7,13 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-import de.tixus.mb.opac.client.entities.Author;
-import de.tixus.mb.opac.client.entities.Gender;
-import de.tixus.mb.opac.client.entities.Lending;
-import de.tixus.mb.opac.client.entities.MediaItem;
-import de.tixus.mb.opac.client.entities.MediaKind;
-import de.tixus.mb.opac.client.entities.Person;
-import de.tixus.mb.opac.client.entities.TypeOfPerson;
+import de.tixus.mb.opac.shared.entities.Author;
+import de.tixus.mb.opac.shared.entities.Gender;
+import de.tixus.mb.opac.shared.entities.Lending;
+import de.tixus.mb.opac.shared.entities.MediaItem;
+import de.tixus.mb.opac.shared.entities.MediaKind;
+import de.tixus.mb.opac.shared.entities.Person;
+import de.tixus.mb.opac.shared.entities.TypeOfPerson;
 
 public class DataImporter {
 
@@ -24,13 +24,14 @@ public class DataImporter {
 
   public DataImporter(final ObjectifyDao dao) {
     this.dao = dao;
+  }
 
+  public void clear() {
     final List listAll = dao.listAll(MediaItem.class);
     listAll.addAll(dao.listAll(Person.class));
     listAll.addAll(dao.listAll(Lending.class));
 
     dao.delete(listAll.toArray());
-
   }
 
   public void importMediaItemData() {

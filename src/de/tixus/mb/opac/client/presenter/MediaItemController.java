@@ -4,15 +4,19 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.ListDataProvider;
+import com.googlecode.objectify.Key;
 
 import de.tixus.mb.opac.client.PersistenceServiceAsync;
-import de.tixus.mb.opac.client.entities.Author;
-import de.tixus.mb.opac.client.entities.MediaItem;
-import de.tixus.mb.opac.client.entities.MediaKind;
+import de.tixus.mb.opac.client.event.MediaItemUpdatedEvent;
+import de.tixus.mb.opac.client.event.MediaItemUpdatedEventHandler;
+import de.tixus.mb.opac.shared.entities.Author;
+import de.tixus.mb.opac.shared.entities.MediaItem;
+import de.tixus.mb.opac.shared.entities.MediaKind;
 
 public class MediaItemController implements Controller<MediaItem> {
 
@@ -21,9 +25,24 @@ public class MediaItemController implements Controller<MediaItem> {
    */
   private final ListDataProvider<MediaItem> dataProvider = new ListDataProvider<MediaItem>();
   private final PersistenceServiceAsync persistenceService;
+  private final HandlerManager eventBus;
 
-  public MediaItemController(final PersistenceServiceAsync persistenceService) {
+  public MediaItemController(final HandlerManager eventBus, final PersistenceServiceAsync persistenceService) {
+    this.eventBus = eventBus;
     this.persistenceService = persistenceService;
+
+    init();
+  }
+
+  private void init() {
+    eventBus.addHandler(MediaItemUpdatedEvent.TYPE, new MediaItemUpdatedEventHandler() {
+
+      public void onMediaItemUpdated(final MediaItemUpdatedEvent event) {
+        doMediaItemUpdated(event.getId());
+      }
+
+    });
+
     final List<MediaItem> mediaItems = dataProvider.getList();
     persistenceService.listAllMediaItems(new AsyncCallback<List<MediaItem>>() {
 
@@ -34,9 +53,28 @@ public class MediaItemController implements Controller<MediaItem> {
 
       @Override
       public void onFailure(final Throwable caught) {
-        throw new RuntimeException(caught);
+        Window.alert("Server-Fehler: " + caught.getMessage());
       }
     });
+  }
+
+  private void doMediaItemUpdated(final String id) {
+    final List<MediaItem> list = dataProvider.getList();
+    final Key<MediaItem> key = new Key<MediaItem>(MediaItem.class, id);
+    persistenceService.get(key, new AsyncCallback<MediaItem>() {
+
+      @Override
+      public void onSuccess(final MediaItem result) {
+        final int indexOf = list.indexOf(result);
+        list.set(indexOf, result);
+      }
+
+      @Override
+      public void onFailure(final Throwable caught) {
+        Window.alert("Server-Fehler: " + caught.getMessage());
+      }
+    });
+
   }
 
   public void refresh() {
@@ -92,12 +130,37 @@ public class MediaItemController implements Controller<MediaItem> {
       @Override
       public void onSuccess(final Void result) {
         final List<MediaItem> list = dataProvider.getList();
-        list.remove(mediaItem);
-        list.add(mediaItem);
+        final int indexOf = list.indexOf(mediaItem);
+
+        list.set(indexOf, mediaItem);
         Window.alert("Speichern ok!");
       }
     });
 
     dataProvider.refresh();
+  }
+
+  public void search(final String mediaNumber,
+                     final String title,
+                     final Author author,
+                     final Date publicationYear,
+                     final MediaKind selectedMediaKind,
+                     final Set<String> genreSet) {
+
+    persistenceService.search(mediaNumber, title, author, publicationYear, selectedMediaKind, genreSet,
+                              new AsyncCallback<List<MediaItem>>() {
+
+                                @Override
+                                public void onSuccess(final List<MediaItem> result) {
+                                  final List<MediaItem> list = dataProvider.getList();
+                                  list.clear();
+                                  list.addAll(result);
+                                }
+
+                                @Override
+                                public void onFailure(final Throwable caught) {
+                                  Window.alert("Server-Fehler: " + caught.getMessage());
+                                }
+                              });
   }
 }

@@ -7,12 +7,13 @@ import java.util.Set;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+import com.googlecode.objectify.Key;
 
-import de.tixus.mb.opac.client.entities.Author;
-import de.tixus.mb.opac.client.entities.Lending;
-import de.tixus.mb.opac.client.entities.MediaItem;
-import de.tixus.mb.opac.client.entities.MediaKind;
-import de.tixus.mb.opac.client.entities.Person;
+import de.tixus.mb.opac.shared.entities.Author;
+import de.tixus.mb.opac.shared.entities.Lending;
+import de.tixus.mb.opac.shared.entities.MediaItem;
+import de.tixus.mb.opac.shared.entities.MediaKind;
+import de.tixus.mb.opac.shared.entities.Person;
 
 /**
  * The client side stub for the RPC service.
@@ -39,4 +40,13 @@ public interface PersistenceService extends RemoteService {
   List<MediaItem> listAllLendings(Person person);
 
   Lending endLending(MediaItem mediaItem);
+
+  <T extends Serializable> T get(Key<T> key);
+
+  List<MediaItem> search(String mediaNumber,
+                         String title,
+                         Author author,
+                         Date publicationYear,
+                         MediaKind selectedMediaKind,
+                         Set<String> genreSet);
 }
