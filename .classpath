@@ -10,5 +10,6 @@
 	<classpathentry kind="lib" path="C:/Java/eclipse/3.6/eclipse/plugins/com.google.appengine.eclipse.sdkbundle.1.4.0_1.4.0.v201012021502/appengine-java-sdk-1.4.0/lib/testing/appengine-testing.jar"/>
 	<classpathentry kind="lib" path="C:/Java/eclipse/3.6/eclipse/plugins/com.google.appengine.eclipse.sdkbundle.1.4.0_1.4.0.v201012021502/appengine-java-sdk-1.4.0/lib/impl/appengine-api-stubs.jar"/>
 	<classpathentry kind="lib" path="C:/project/selfstudy/opac/mbopac/war/WEB-INF/lib/smartgwt.jar"/>
+	<classpathentry kind="lib" path="C:/project/selfstudy/opac/mbopac/war/WEB-INF/lib/ostermillerutils_1_07_00.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

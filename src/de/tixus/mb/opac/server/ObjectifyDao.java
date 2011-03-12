@@ -73,9 +73,9 @@ public class ObjectifyDao {
 
   private void log(final Object... objs) {
     // log nothing
-    for (final Object object : objs) {
-      System.out.println(object.getClass() + "=" + object.toString() + "@" + Integer.toHexString(object.hashCode()));
-    }
+    //    for (final Object object : objs) {
+    //      System.out.println(object.getClass() + "=" + object.toString() + "@" + Integer.toHexString(object.hashCode()));
+    //    }
   }
 
   public <T> List<T> find(final Class<T> clazz, final String expression, final Object value) {
