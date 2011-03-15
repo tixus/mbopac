@@ -8,7 +8,6 @@ public class CSVImporterTest extends TestCase {
   CSVImporter csvImporter = new CSVImporter();
 
   public void testBookImport() throws Exception {
-    //    Nachtragskatalog_2011-book.csv
-    csvImporter.parse("Nachtragskatalog_2011-book.csv", MediaKind.Book);
+    csvImporter.parse("Katalog-Book-Tester.csv", MediaKind.Book);
   }
 }

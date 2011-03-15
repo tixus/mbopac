@@ -62,44 +62,66 @@ public class MediaItemHolder {
     final List<String> validation = new ArrayList<String>();
 
     final String mediaNumberFixed = getMediaNumber(validation);
-    //    author=Raabe, Wilhelm
-    //    author=Schmidt, Helmut / Stern, Fritz =>?
-    //    author=Hampel, Thomas (Hrsg.) => Thomas Hampel (Hrsg.)
     final String authorTrimmed = author.replace(" ", "");
-    final String[] authorsSplit = authorTrimmed.split("/");
-
-    final String[] authorSplit = authorsSplit[0].split(",");
-    Author authorFixed = null;
-    if (authorSplit.length < 2) {
-      validation.add(" Autor zu kurz: " + author);
-    } else if (authorsSplit.length > 2) {
-      authorFixed = new Author(authorSplit[1], authorSplit[0]);
-      validation.add(" zu viele Autoren: " + author + "; verarbeite ersten Autor: " + authorFixed);
+    //    author=Schmidt, Helmut / Stern, Fritz =>?
+    final String[] multipleAuthorsSplit = authorTrimmed.split("/");
+    final String[] authorSplit = multipleAuthorsSplit[0].split(",");
+    if (multipleAuthorsSplit.length > 2) {
+      System.err.println(" zu viele Autoren: " + author + "; verarbeite ersten Autor: " + Arrays.asList(authorSplit));
     }
+    Author authorFixed = null;
+    if (authorSplit.length == 0) {
+      validation.add(" Autor zu kurz: " + author);
+    } else if (authorSplit.length == 1) {
+      //      Klein Georg -> Vorname Nachname
+      //      Loriot ->Nachname
+
+    } else {
+      //    author=Raabe, Wilhelm
+      //    André-Lang/Rast, Harald
+      String firstName = authorSplit[1];
+      String lastName = authorSplit[0];
+      //    author=Hampel, Thomas (Hrsg.) => Thomas Hampel (Hrsg.)
+      final int hrsgIndex = firstName.indexOf("(Hrsg.)");
+      if (hrsgIndex > 0) {
+        firstName = firstName.substring(0, hrsgIndex);
+        lastName += "(Hrsg.)";
+      }
+      authorFixed = new Author(firstName, lastName);
+    }
+
     final String titleFixed = title.trim();
+    if (titleFixed.isEmpty()) {
+      validation.add("Titel ist leer");
+    }
     //    shortDescription= linefeed
     final String shortDescriptionFixed = shortDescription.trim();
+    if (shortDescriptionFixed.isEmpty()) {
+      validation.add("Kurzbeschreibung ist leer");
+    }
+
     //    genres=Humor, Satire
-    final String[] genresSplit = genres.split(",");
+    final String[] genresSplit = genres.trim().split(",");
     final Set<String> genresFixed = new HashSet<String>(Arrays.asList(genresSplit));
 
     Date publicationYearFixed = null;
     try {
       publicationYearFixed = new Date(Integer.valueOf(publicationYear), 0, 0);
     } catch (final NumberFormatException nfe) {
-      validation.add(" Erscheinungsjahr ist keine Zahl: " + publicationYear);
+      validation.add("Erscheinungsjahr ist keine Zahl: " + publicationYear);
     }
     Integer countFixed = null;
     try {
       countFixed = Integer.valueOf(count);
     } catch (final NumberFormatException nfe) {
-      validation.add(" Umfang ist keine Zahl: " + count);
+      validation.add("Umfang ist keine Zahl: " + count);
     }
 
     if (!validation.isEmpty()) {
       System.err.println("Datensatz ungültig: " + validation.toString());
       return null;
     }
+
     final String id = UUID.nameUUIDFromBytes(mediaNumberFixed.getBytes()).toString();
 
     return new MediaItem(id, mediaNumberFixed, titleFixed, shortDescriptionFixed, authorFixed, publicationYearFixed, mediaKind, countFixed,
