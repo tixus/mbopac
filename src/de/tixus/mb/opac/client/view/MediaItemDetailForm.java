@@ -65,6 +65,10 @@ public class MediaItemDetailForm extends Composite {
   @UiField
   ListBox mediaKindBox;
   @UiField
+  TextBox countBox;
+  @UiField
+  Label countBoxLabel;
+  @UiField
   ListBox genreBox;
   @UiField
   Button createButton;
@@ -80,6 +84,8 @@ public class MediaItemDetailForm extends Composite {
 
   public MediaItemDetailForm(final MediaItemController mediaItemController) {
     initWidget(uiBinder.createAndBindUi(this));
+    // TODO updating the unique identifier needs more than property setting
+    mediaNumberBox.setEnabled(false);
 
     final DateTimeFormat dateFormat = DateTimeFormat.getFormat(PredefinedFormat.YEAR);
     yearBox.setFormat(new DateBox.DefaultFormat(dateFormat));
@@ -104,8 +110,7 @@ public class MediaItemDetailForm extends Composite {
           return;
         }
         // Update the contact.
-        // TODO more validations
-        mediaItem.mediaNumber = mediaNumberBox.getText();
+        // mediaItem.mediaNumber = mediaNumberBox.getText();
         final String title = titleBox.getText();
         final String text = authorBox.getText();
         if (!FieldVerifier.isWhiteSpaceSeparatedName(text)) {
@@ -120,6 +125,9 @@ public class MediaItemDetailForm extends Composite {
         // FIXME list to set
         final MediaKind kind = mediaItem.getKind();
         mediaKindBox.getSelectedIndex();
+        // FIXME use countBox
+        final String countString = countBox.getText();
+        final Integer count = Integer.valueOf(countString);
         // FIXME list to set
         final int categoryIndex = genreBox.getSelectedIndex();
         final Set<String> genreSet = new HashSet<String>(Arrays.asList(genres[categoryIndex]));
@@ -150,10 +158,12 @@ public class MediaItemDetailForm extends Composite {
         //        final Set<String> genres = new HashSet<String>(Arrays.asList(genres[categoryIndex]));
 
         final MediaKind kind = null;
+        final String countString = countBox.getText();
+        final Integer count = Integer.valueOf(countString);
         final Set<String> genreSet = null;
         // Update the views.
         final MediaItem createdMediaItem = mediaItemController.createMediaItem(title, mediaNumber, shortDescription, author,
-                                                                               publicationYear, kind, genreSet);
+                                                                               publicationYear, kind, count, genreSet);
         setItem(createdMediaItem);
       }
     });
@@ -166,11 +176,14 @@ public class MediaItemDetailForm extends Composite {
     if (mediaItem != null) {
       mediaNumberBox.setText(mediaItem.getMediaNumber());
       titleBox.setText(mediaItem.getTitle());
-      authorBox.setText(mediaItem.getAuthor().toString());
+      authorBox.setText(nullSafeToString(mediaItem.getAuthor()));
       yearBox.setValue(mediaItem.getPublicationYear());
       shortDescriptionBox.setText(mediaItem.getShortDescription());
       //      TODO
       mediaKindBox.setSelectedIndex(0);
+      countBox.setText(nullSafeToString(mediaItem.getCount()));
+      countBoxLabel.setText(mediaItem.getKind().getCountAsString());
+
       final Set<String> genres2 = mediaItem.getGenres();
       if (genres2 != null) {
         outer: for (final String string : genres2) {
@@ -184,5 +197,9 @@ public class MediaItemDetailForm extends Composite {
       }
       lentLabel.setText(mediaItem.isLent() ? "Verliehen" : "Entleihbar");
     }
+  }
+
+  private <T> String nullSafeToString(final T t) {
+    return t == null ? "" : t.toString();
   }
 }

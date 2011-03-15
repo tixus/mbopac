@@ -42,8 +42,10 @@ public class DataImporter {
       final String mediaNumber = number + i;
       final String id = UUID.nameUUIDFromBytes(mediaNumber.getBytes()).toString();
       final Set<String> genreSet = new HashSet<String>(Arrays.asList(genres[genres.length % (i + 1)]));
+      final Integer count = i;
       final MediaItem mediaItem = new MediaItem(id, mediaNumber, author[i] + "Titel", author[i] + "Kurzbeschreibung",
-                                                new Author("Vorname", author[i]), new Date(), mediaKind[i % mediaKind.length], genreSet);
+                                                new Author("Vorname", author[i]), new Date(), mediaKind[i % mediaKind.length], count,
+                                                genreSet);
 
       dao.create(mediaItem);
     }

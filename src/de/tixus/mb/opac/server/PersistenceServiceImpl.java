@@ -43,6 +43,7 @@ public class PersistenceServiceImpl extends RemoteServiceServlet implements Pers
                                    final Author author,
                                    final Date publicationYear,
                                    final MediaKind kind,
+                                   final Integer count,
                                    final Set<String> genres) throws IllegalArgumentException {
 
     // Escape data from the client to avoid cross-site script vulnerabilities.
@@ -50,7 +51,7 @@ public class PersistenceServiceImpl extends RemoteServiceServlet implements Pers
     final String mediaNumber = escapeHtml(mediaNumberParam);
     final String id = UUID.nameUUIDFromBytes(mediaNumber.getBytes()).toString();
 
-    final MediaItem mediaItem = new MediaItem(id, mediaNumberParam, title, shortDescription, author, publicationYear, kind, genres);
+    final MediaItem mediaItem = new MediaItem(id, mediaNumberParam, title, shortDescription, author, publicationYear, kind, count, genres);
 
     dao.create(mediaItem);
 
@@ -135,7 +136,7 @@ public class PersistenceServiceImpl extends RemoteServiceServlet implements Pers
       filterMap.put("author.lastName", author.getLastName());
     }
     filterMap.put("publicationYear", publicationYear);
-    filterMap.put("kind", mediaKind);
+    filterMap.put("mediaKind", mediaKind);
     filterMap.put("genres IN", genreSet);
 
     return dao.find(MediaItem.class, filterMap);

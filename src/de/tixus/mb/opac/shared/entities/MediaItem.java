@@ -24,28 +24,30 @@ public class MediaItem implements Serializable {
 
   @Id
   private String id;
-  public String mediaNumber;
-  public String title;
-  public String shortDescription;
+  private String mediaNumber;
+  private String title;
+  private String shortDescription;
   @Embedded
-  public Author author;
-  public Date publicationYear;
-  public MediaKind kind;
-  public Set<String> genres;
-  public Key<Person> lentTo;
+  private Author author;
+  private Date publicationYear;
+  private MediaKind mediaKind;
+  private Integer count;
+  private Set<String> genres;
+  private Key<Person> lentTo;
 
   public MediaItem() {
   }
 
   public MediaItem(final String id, final String mediaNumber, final String title, final String shortDescription, final Author author,
-                   final Date publicationYear, final MediaKind kind, final Set<String> genres) {
+                   final Date publicationYear, final MediaKind kind, final Integer count, final Set<String> genres) {
     this.id = id;
     this.mediaNumber = mediaNumber;
     this.title = title;
     this.shortDescription = shortDescription;
     this.author = author;
     this.publicationYear = publicationYear;
-    this.kind = kind;
+    this.mediaKind = kind;
+    this.count = count;
     this.genres = genres;
   }
 
@@ -62,7 +64,11 @@ public class MediaItem implements Serializable {
   }
 
   public MediaKind getKind() {
-    return kind;
+    return mediaKind;
+  }
+
+  public Integer getCount() {
+    return count;
   }
 
   public String getMediaNumber() {
@@ -97,7 +103,7 @@ public class MediaItem implements Serializable {
     builder.append(", publicationYear=");
     builder.append(publicationYear);
     builder.append(", kind=");
-    builder.append(kind);
+    builder.append(mediaKind);
     builder.append(", genres=");
     builder.append(genres);
     builder.append("]");
@@ -114,7 +120,7 @@ public class MediaItem implements Serializable {
     this.shortDescription = shortDescription;
     this.author = author;
     this.publicationYear = publicationYear;
-    this.kind = kind;
+    this.mediaKind = kind;
     this.genres = genres;
   }
 

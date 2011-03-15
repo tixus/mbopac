@@ -33,7 +33,7 @@ public class ObjectifyTestFactory {
     final MediaKind kind = null;
     final Set<String> genres = null;
     return new MediaItem(UUID.nameUUIDFromBytes(mediaNumber.getBytes()).toString(), mediaNumber, title, shortDescription, author,
-                         publicationYear, kind, genres);
+                         publicationYear, kind, 1, genres);
   }
 
   public Lending createLending(final Person person, final MediaItem mediaItem) {

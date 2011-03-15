@@ -40,11 +40,6 @@ public class PersistenceServiceTest {
   // CUD
   private final PersistenceService persistenceService = new PersistenceServiceImpl();
 
-  /**
-   * Test method for
-   * {@link de.tixus.mb.opac.server.PersistenceServiceImpl#createMediaItem(java.lang.String, java.lang.String, java.lang.String, de.tixus.mb.opac.client.entities.Author, java.util.Date, de.tixus.mb.opac.client.entities.MediaKind, java.util.Set)}
-   * .
-   */
   @Test
   public void testCreateMediaItem() {
     fail("Not yet implemented");

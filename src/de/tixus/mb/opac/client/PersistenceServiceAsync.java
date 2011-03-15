@@ -25,15 +25,6 @@ public interface PersistenceServiceAsync {
 
   void listAllMediaItems(AsyncCallback<List<MediaItem>> callback);
 
-  void createMediaItem(String titleParam,
-                       String mediaNumberParam,
-                       String shortDescription,
-                       Author author,
-                       Date publicationYear,
-                       MediaKind kind,
-                       Set<String> genres,
-                       AsyncCallback<MediaItem> callback);
-
   void listAllPersons(AsyncCallback<List<Person>> asyncCallback);
 
   void listAllLendings(Person person, AsyncCallback<List<MediaItem>> asyncCallback);
@@ -51,5 +42,15 @@ public interface PersistenceServiceAsync {
               AsyncCallback<List<MediaItem>> asyncCallback);
 
   void setUp(AsyncCallback<Void> callback);
+
+  void createMediaItem(String titleParam,
+                       String mediaNumberParam,
+                       String shortDescription,
+                       Author author,
+                       Date publicationYear,
+                       MediaKind kind,
+                       Integer count,
+                       Set<String> genres,
+                       AsyncCallback<MediaItem> callback);
 
 }

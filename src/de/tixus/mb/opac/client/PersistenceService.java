@@ -31,6 +31,7 @@ public interface PersistenceService extends RemoteService {
                             Author author,
                             Date publicationYear,
                             MediaKind kind,
+                            Integer count,
                             Set<String> genres) throws IllegalArgumentException;
 
   List<MediaItem> listAllMediaItems();

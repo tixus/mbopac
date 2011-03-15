@@ -30,8 +30,9 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 
-import de.tixus.mb.opac.client.presenter.MediaItemController;
+import de.tixus.mb.opac.client.presenter.PersonsController;
 import de.tixus.mb.opac.shared.entities.MediaItem;
+import de.tixus.mb.opac.shared.entities.Person;
 
 /**
  * A form used for editing persons.
@@ -58,9 +59,9 @@ public class PersonDetailForm extends Composite {
   @UiField
   Button createButton;
 
-  private MediaItem mediaItem;
+  private Person person;
 
-  public PersonDetailForm(final MediaItemController controller) {
+  public PersonDetailForm(final PersonsController controller) {
     initWidget(uiBinder.createAndBindUi(this));
     final DateTimeFormat dateFormat = DateTimeFormat.getFormat(PredefinedFormat.DATE_LONG);
     birthdayBox.setFormat(new DateBox.DefaultFormat(dateFormat));
@@ -72,13 +73,13 @@ public class PersonDetailForm extends Composite {
     updateButton.addClickHandler(new ClickHandler() {
 
       public void onClick(final ClickEvent event) {
-        if (mediaItem == null) {
-          return;
-        }
-
-        // Update the contact.
-        mediaItem.mediaNumber = firstNameBox.getText();
-        mediaItem.title = lastNameBox.getText();
+        //        if (mediaItem == null) {
+        //          return;
+        //        }
+        //
+        //        // Update the contact.
+        //        mediaItem.mediaNumber = firstNameBox.getText();
+        //        mediaItem.title = lastNameBox.getText();
         //        mediaItem.setLastName(lastNameBox.getText());
         //        mediaItem.setAddress(addressBox.getText());
         //        mediaItem.setBirthday(birthdayBox.getValue());
@@ -86,7 +87,7 @@ public class PersonDetailForm extends Composite {
         //        mediaItem.setCategory(categories[categoryIndex]);
 
         // Update the views.
-        controller.update(mediaItem);
+        //        controller.update(mediaItem);
       }
     });
     createButton.addClickHandler(new ClickHandler() {
@@ -104,21 +105,21 @@ public class PersonDetailForm extends Composite {
   }
 
   public void setItem(final MediaItem mediaItem) {
-    this.mediaItem = mediaItem;
-    updateButton.setEnabled(mediaItem != null);
-    if (mediaItem != null) {
-      firstNameBox.setText(mediaItem.mediaNumber);
-      lastNameBox.setText(mediaItem.title);
-      //      addressBox.setText(contact.getAddress());
-      //      birthdayBox.setValue(contact.getBirthday());
-      //      final Category category = contact.getCategory();
-      //      final Category[] categories = ContactDatabase.get().queryCategories();
-      //      for (int i = 0; i < categories.length; i++) {
-      //        if (category == categories[i]) {
-      //          categoryBox.setSelectedIndex(i);
-      //          break;
-      //        }
-      //      }
-    }
+    //    this.mediaItem = mediaItem;
+    //    updateButton.setEnabled(mediaItem != null);
+    //    if (mediaItem != null) {
+    //      firstNameBox.setText(mediaItem.getMediaNumber());
+    //      lastNameBox.setText(mediaItem.getTitle());
+    //      addressBox.setText(contact.getAddress());
+    //      birthdayBox.setValue(contact.getBirthday());
+    //      final Category category = contact.getCategory();
+    //      final Category[] categories = ContactDatabase.get().queryCategories();
+    //      for (int i = 0; i < categories.length; i++) {
+    //        if (category == categories[i]) {
+    //          categoryBox.setSelectedIndex(i);
+    //          break;
+    //        }
+    //      }
+    //    }
   }
 }

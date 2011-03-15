@@ -81,6 +81,15 @@
 			</tr>
 			<tr>
 				<td class='{style.label}'>
+					<ui:msg key='countBox'>Umfang:</ui:msg>
+				</td>
+				<td>
+					<g:TextBox ui:field='countBox' />
+					<g:Label ui:field='countBoxLabel' />
+				</td>
+			</tr>
+			<tr>
+				<td class='{style.label}'>
 					<ui:msg key='genreBox'>Genre:</ui:msg>
 				</td>
 				<td>

@@ -96,9 +96,10 @@ public class MediaItemController implements Controller<MediaItem> {
                                    final Author author,
                                    final Date publicationYear,
                                    final MediaKind kind,
+                                   final Integer count,
                                    final Set<String> genres) {
 
-    persistenceService.createMediaItem(title, mediaNumber, shortDescription, author, publicationYear, kind, genres,
+    persistenceService.createMediaItem(title, mediaNumber, shortDescription, author, publicationYear, kind, count, genres,
                                        new AsyncCallback<MediaItem>() {
 
                                          @Override
