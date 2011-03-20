@@ -7,7 +7,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -86,7 +85,7 @@ public class PersistenceServiceTest {
     String mediaNumber = null;
     final String title = null;
     final Author author = null;
-    final Date publicationYear = null;
+    final Integer publicationYear = null;
     final MediaKind selectedMediaKind = null;
     final Set<String> genreSet = null;
     // null test

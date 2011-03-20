@@ -1,7 +1,6 @@
 package de.tixus.mb.opac.server;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,7 +40,7 @@ public class PersistenceServiceImpl extends RemoteServiceServlet implements Pers
                                    final String mediaNumberParam,
                                    final String shortDescription,
                                    final Author author,
-                                   final Date publicationYear,
+                                   final Integer publicationYear,
                                    final MediaKind kind,
                                    final Integer count,
                                    final Set<String> genres) throws IllegalArgumentException {
@@ -101,6 +100,10 @@ public class PersistenceServiceImpl extends RemoteServiceServlet implements Pers
     return dao.get(key);
   }
 
+  public <T extends Serializable> boolean contains(final Key<T> key) {
+    return dao.contains(key);
+  }
+
   /**
    * Escape an html string. Escaping data received from the client helps to prevent cross-site script vulnerabilities.
    * 
@@ -118,7 +121,7 @@ public class PersistenceServiceImpl extends RemoteServiceServlet implements Pers
   public List<MediaItem> search(final String mediaNumber,
                                 final String title,
                                 final Author author,
-                                final Date publicationYear,
+                                final Integer publicationYear,
                                 final MediaKind mediaKind,
                                 final Set<String> genreSet) {
 
@@ -132,8 +135,14 @@ public class PersistenceServiceImpl extends RemoteServiceServlet implements Pers
       filterMap.put("title <", title + "\ufffd");
     }
     if (author != null) {
-      filterMap.put("author.firstName", author.getFirstName());
-      filterMap.put("author.lastName", author.getLastName());
+      final String firstName = author.getFirstName();
+      if (firstName != null) {
+        filterMap.put("author.firstName", firstName);
+      }
+      final String lastName = author.getLastName();
+      if (lastName != null) {
+        filterMap.put("author.lastName", lastName);
+      }
     }
     filterMap.put("publicationYear", publicationYear);
     filterMap.put("mediaKind", mediaKind);

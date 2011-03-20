@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.googlecode.objectify.Key;
+import com.googlecode.objectify.NotFoundException;
 import com.googlecode.objectify.ObjectifyOpts;
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.Query;
@@ -61,6 +62,15 @@ public class ObjectifyDao {
   public <T> T get(final Key<T> key) {
     // TODO throws EntityNotFoundException 
     return daoBase.ofy().get(key);
+  }
+
+  public <T> boolean contains(final Key<T> key) {
+    try {
+      final T t = daoBase.ofy().get(key);
+      return true;
+    } catch (final NotFoundException e) {
+      return false;
+    }
   }
 
   public <T> List<T> listAll(final Class<T> clazz) {

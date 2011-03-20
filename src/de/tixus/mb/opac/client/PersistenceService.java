@@ -1,7 +1,6 @@
 package de.tixus.mb.opac.client;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -29,7 +28,7 @@ public interface PersistenceService extends RemoteService {
                             String mediaNumberParam,
                             String shortDescription,
                             Author author,
-                            Date publicationYear,
+                            Integer publicationYear,
                             MediaKind kind,
                             Integer count,
                             Set<String> genres) throws IllegalArgumentException;
@@ -58,9 +57,11 @@ public interface PersistenceService extends RemoteService {
   List<MediaItem> search(String mediaNumber,
                          String title,
                          Author author,
-                         Date publicationYear,
+                         Integer publicationYear,
                          MediaKind selectedMediaKind,
                          Set<String> genreSet);
 
   void setUp();
+
+  <T extends Serializable> boolean contains(Key<T> key);
 }

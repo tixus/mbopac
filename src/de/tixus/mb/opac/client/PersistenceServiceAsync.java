@@ -1,7 +1,6 @@
 package de.tixus.mb.opac.client;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -36,7 +35,7 @@ public interface PersistenceServiceAsync {
   void search(final String mediaNumber,
               final String title,
               final Author author,
-              final Date publicationYear,
+              final Integer publicationYear,
               final MediaKind selectedMediaKind,
               final Set<String> genreSet,
               AsyncCallback<List<MediaItem>> asyncCallback);
@@ -47,10 +46,12 @@ public interface PersistenceServiceAsync {
                        String mediaNumberParam,
                        String shortDescription,
                        Author author,
-                       Date publicationYear,
+                       Integer publicationYear,
                        MediaKind kind,
                        Integer count,
                        Set<String> genres,
                        AsyncCallback<MediaItem> callback);
+
+  <T extends Serializable> void contains(Key<T> key, AsyncCallback<Boolean> callback);
 
 }

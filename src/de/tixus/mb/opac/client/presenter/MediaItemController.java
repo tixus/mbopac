@@ -1,6 +1,5 @@
 package de.tixus.mb.opac.client.presenter;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -66,7 +65,9 @@ public class MediaItemController implements Controller<MediaItem> {
       @Override
       public void onSuccess(final MediaItem result) {
         final int indexOf = list.indexOf(result);
-        list.set(indexOf, result);
+        if (indexOf != -1) {
+          list.set(indexOf, result);
+        }
       }
 
       @Override
@@ -94,7 +95,7 @@ public class MediaItemController implements Controller<MediaItem> {
                                    final String mediaNumber,
                                    final String shortDescription,
                                    final Author author,
-                                   final Date publicationYear,
+                                   final Integer publicationYear,
                                    final MediaKind kind,
                                    final Integer count,
                                    final Set<String> genres) {
@@ -144,7 +145,7 @@ public class MediaItemController implements Controller<MediaItem> {
   public void search(final String mediaNumber,
                      final String title,
                      final Author author,
-                     final Date publicationYear,
+                     final Integer publicationYear,
                      final MediaKind selectedMediaKind,
                      final Set<String> genreSet) {
 

@@ -20,6 +20,7 @@ public class CSVImporter {
     final LabeledCSVParser labeledCSVParser = new LabeledCSVParser(new CSVParser(new FileInputStream(fileName), ';'));
 
     final String[] labels = labeledCSVParser.getLabels();
+    // TODO assert labels present
     System.out.println("Spaltenamen: " + Arrays.asList(labels));
     final List<MediaItem> mediaItems = new ArrayList<MediaItem>();
     while (labeledCSVParser.getLine() != null) {
@@ -37,12 +38,9 @@ public class CSVImporter {
       // toMediaItem utilizing new MediaItem validations
       final MediaItemHolder mediaItemHolder = new MediaItemHolder(mediaNumber, title, shortDescription, author, publicationYear, mediaKind,
                                                                   count, genres);
-      System.out.println(labeledCSVParser.getLastLineNumber() + ": " + mediaItemHolder);
-
       final MediaItem mediaItem = mediaItemHolder.toMediaItem();
       if (mediaItem != null) {
         mediaItems.add(mediaItem);
-        System.out.println("Datensatz ok: " + mediaItem);
       }
     }
 

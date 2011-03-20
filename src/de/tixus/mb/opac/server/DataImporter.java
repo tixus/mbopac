@@ -1,13 +1,11 @@
 package de.tixus.mb.opac.server;
 
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashSet;
+import java.io.IOException;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
-import de.tixus.mb.opac.shared.entities.Author;
+import com.googlecode.objectify.Key;
+
 import de.tixus.mb.opac.shared.entities.Gender;
 import de.tixus.mb.opac.shared.entities.Lending;
 import de.tixus.mb.opac.shared.entities.MediaItem;
@@ -21,6 +19,7 @@ public class DataImporter {
   final String[] author = new String[] { "FrankA", "FrankB", "FrankC", "FrankD", "FrankF" };
 
   private final ObjectifyDao dao;
+  private final CSVImporter csvImporter = new CSVImporter();
 
   public DataImporter(final ObjectifyDao dao) {
     this.dao = dao;
@@ -35,21 +34,38 @@ public class DataImporter {
   }
 
   public void importMediaItemData() {
-    final String number = "M123456789";
-    final MediaKind[] mediaKind = MediaKind.values();
+    //    final String number = "M123456789";
+    //    final MediaKind[] mediaKind = MediaKind.values();
+    //
+    //    for (int i = 0; i < author.length; i++) {
+    //      final String mediaNumber = number + i;
+    //      final String id = UUID.nameUUIDFromBytes(mediaNumber.getBytes()).toString();
+    //      final Set<String> genreSet = new HashSet<String>(Arrays.asList(genres[genres.length % (i + 1)]));
+    //      final Integer count = i;
+    //      final MediaItem mediaItem = new MediaItem(id, mediaNumber, author[i] + "Titel", author[i] + "Kurzbeschreibung",
+    //                                                new Author("Vorname", author[i]), 2010, mediaKind[i % mediaKind.length], count, genreSet);
+    //
+    //      dao.create(mediaItem);
+    //    }
 
-    for (int i = 0; i < author.length; i++) {
-      final String mediaNumber = number + i;
-      final String id = UUID.nameUUIDFromBytes(mediaNumber.getBytes()).toString();
-      final Set<String> genreSet = new HashSet<String>(Arrays.asList(genres[genres.length % (i + 1)]));
-      final Integer count = i;
-      final MediaItem mediaItem = new MediaItem(id, mediaNumber, author[i] + "Titel", author[i] + "Kurzbeschreibung",
-                                                new Author("Vorname", author[i]), new Date(), mediaKind[i % mediaKind.length], count,
-                                                genreSet);
+    try {
+      final List<MediaItem> mediaItems = csvImporter.parse("C:/project/selfstudy/opac/mbopac/war/WEB-INF/Nachtragskatalog_2011-book.csv",
+                                                           MediaKind.Book);
 
-      dao.create(mediaItem);
+      // TODO 
+      for (final MediaItem mediaItem : mediaItems) {
+        final Key<MediaItem> key = new Key<MediaItem>(MediaItem.class, mediaItem.getId());
+        if (dao.contains(key)) {
+          System.out.println("Ignoring existing entity: " + mediaItem);
+          continue;
+        }
+        dao.create(mediaItem);
+      }
+
+    } catch (final IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
     }
-
   }
 
   public void importPersonData() {
@@ -75,8 +91,8 @@ public class DataImporter {
       final List<MediaItem> allMediaItems = dao.listAll(MediaItem.class);
       final List<Person> listAllPersons = dao.listAll(Person.class);
       int i = 0;
-      for (final MediaItem mediaItem : allMediaItems) {
-        final Person person = listAllPersons.get(i++);
+      for (final Person person : listAllPersons) {
+        final MediaItem mediaItem = allMediaItems.get(i++);
         final Lending lending = new Lending(UUID.randomUUID().toString(), person, mediaItem);
 
         mediaItem.lendTo(person);

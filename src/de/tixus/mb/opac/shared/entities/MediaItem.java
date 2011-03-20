@@ -4,7 +4,6 @@
 package de.tixus.mb.opac.shared.entities;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.Set;
 
 import javax.persistence.Embedded;
@@ -29,7 +28,7 @@ public class MediaItem implements Serializable {
   private String shortDescription;
   @Embedded
   private Author author;
-  private Date publicationYear;
+  private Integer publicationYear;
   private MediaKind mediaKind;
   private Integer count;
   private Set<String> genres;
@@ -39,7 +38,7 @@ public class MediaItem implements Serializable {
   }
 
   public MediaItem(final String id, final String mediaNumber, final String title, final String shortDescription, final Author author,
-                   final Date publicationYear, final MediaKind kind, final Integer count, final Set<String> genres) {
+                   final Integer publicationYear, final MediaKind kind, final Integer count, final Set<String> genres) {
     this.id = id;
     this.mediaNumber = mediaNumber;
     this.title = title;
@@ -75,7 +74,7 @@ public class MediaItem implements Serializable {
     return mediaNumber;
   }
 
-  public Date getPublicationYear() {
+  public Integer getPublicationYear() {
     return publicationYear;
   }
 
@@ -92,19 +91,21 @@ public class MediaItem implements Serializable {
     final StringBuilder builder = new StringBuilder();
     builder.append("MediaItem [id=");
     builder.append(id);
-    builder.append(", mediaNumber=");
+    builder.append(", Mediennummer=");
     builder.append(mediaNumber);
-    builder.append(", title=");
+    builder.append(", Titel=");
     builder.append(title);
-    builder.append(", shortDescription=");
+    builder.append(", Kurzbeschreibung=");
     builder.append(shortDescription);
-    builder.append(", author=");
+    builder.append(", Autor=");
     builder.append(author);
-    builder.append(", publicationYear=");
+    builder.append(", Erscheinungsjahr=");
     builder.append(publicationYear);
-    builder.append(", kind=");
+    builder.append(", Art=");
     builder.append(mediaKind);
-    builder.append(", genres=");
+    builder.append(", Umfang=");
+    builder.append(count);
+    builder.append(", Genres=");
     builder.append(genres);
     builder.append("]");
     return builder.toString();
@@ -113,7 +114,7 @@ public class MediaItem implements Serializable {
   public void update(final String title,
                      final String shortDescription,
                      final Author author,
-                     final Date publicationYear,
+                     final Integer publicationYear,
                      final MediaKind kind,
                      final Set<String> genres) {
     this.title = title;

@@ -120,7 +120,7 @@ public class MediaItemDetailForm extends Composite {
         final String[] split = text.split(" ");
         final Author author = new Author(split[0], split[1]);
 
-        final Date publicationYear = yearBox.getValue();
+        final Integer publicationYear = yearBox.getValue() != null ? yearBox.getValue().getYear() : null;
         final String shortDescription = shortDescriptionBox.getText();
         // FIXME list to set
         final MediaKind kind = mediaItem.getKind();
@@ -150,7 +150,7 @@ public class MediaItemDetailForm extends Composite {
         }
         final String[] split = authorText.split(" ");
         final Author author = new Author(split[0], split[1]);
-        final Date publicationYear = yearBox.getValue();
+        final Integer publicationYear = yearBox.getValue() != null ? yearBox.getValue().getYear() : null;
         final String shortDescription = shortDescriptionBox.getText();
         mediaKindBox.getSelectedIndex();
         // FIXME list to set
@@ -177,7 +177,7 @@ public class MediaItemDetailForm extends Composite {
       mediaNumberBox.setText(mediaItem.getMediaNumber());
       titleBox.setText(mediaItem.getTitle());
       authorBox.setText(nullSafeToString(mediaItem.getAuthor()));
-      yearBox.setValue(mediaItem.getPublicationYear());
+      yearBox.setValue(new Date(mediaItem.getPublicationYear() - 1900, 1, 1));
       shortDescriptionBox.setText(mediaItem.getShortDescription());
       //      TODO
       mediaKindBox.setSelectedIndex(0);

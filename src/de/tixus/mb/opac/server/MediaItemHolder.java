@@ -2,7 +2,6 @@ package de.tixus.mb.opac.server;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -59,94 +58,116 @@ public class MediaItemHolder {
   }
 
   public MediaItem toMediaItem() {
-    final List<String> validation = new ArrayList<String>();
+    final List<String> validationError = new ArrayList<String>();
+    final List<String> validationInfo = new ArrayList<String>();
 
-    final String mediaNumberFixed = getMediaNumber(validation);
+    final String mediaNumberFixed = getMediaNumber(validationError, validationInfo);
+    final Author authorFixed = getAuthor(validationError, validationInfo);
+
+    final String titleFixed = title.trim();
+    if (titleFixed.isEmpty()) {
+      validationInfo.add("Titel ist leer");
+    }
+    //    shortDescription= linefeed
+    final String shortDescriptionFixed = shortDescription.trim();
+    if (shortDescriptionFixed.isEmpty()) {
+      validationInfo.add("Kurzbeschreibung ist leer");
+    }
+
+    //    genres=Humor, Satire
+    final String[] genresSplit = genres.trim().split(",");
+    final Set<String> genresFixed = new HashSet<String>(Arrays.asList(genresSplit));
+    if (genresFixed.isEmpty()) {
+      validationInfo.add("Genres ist leer");
+    }
+
+    Integer publicationYearFixed = null;
+    try {
+      publicationYearFixed = Integer.valueOf(publicationYear);
+    } catch (final NumberFormatException nfe) {
+      validationError.add("Erscheinungsjahr ist keine Zahl: " + publicationYear);
+    }
+    Integer countFixed = null;
+    try {
+      countFixed = Integer.valueOf(count.replace(".", ""));
+    } catch (final NumberFormatException nfe) {
+      validationError.add("Umfang ist keine Zahl: " + count);
+    }
+
+    System.out.println(this.toString());
+
+    if (!validationError.isEmpty()) {
+      System.out.println("Datensatz ungültig: " + validationError.toString());
+      return null;
+    }
+
+    final String id = UUID.nameUUIDFromBytes(mediaNumberFixed.getBytes()).toString();
+
+    final MediaItem mediaItem = new MediaItem(id, mediaNumberFixed, titleFixed, shortDescriptionFixed, authorFixed, publicationYearFixed,
+                                              mediaKind, countFixed, genresFixed);
+    if (!validationInfo.isEmpty()) {
+      System.out.println("Datensatz gültig aber Warnungen: " + validationInfo.toString());
+    }
+
+    System.out.println("Erkannter Datensatz: " + mediaItem);
+    return mediaItem;
+  }
+
+  private Author getAuthor(final List<String> validationError, final List<String> validationInfo) {
     final String authorTrimmed = author.replace(" ", "");
     //    author=Schmidt, Helmut / Stern, Fritz =>?
     final String[] multipleAuthorsSplit = authorTrimmed.split("/");
     final String[] authorSplit = multipleAuthorsSplit[0].split(",");
-    if (multipleAuthorsSplit.length > 2) {
-      System.err.println(" zu viele Autoren: " + author + "; verarbeite ersten Autor: " + Arrays.asList(authorSplit));
+    if (multipleAuthorsSplit.length > 1) {
+      validationInfo.add(" zu viele Autoren: " + author + "; verarbeite ersten Autor: " + Arrays.asList(authorSplit));
     }
+
     Author authorFixed = null;
     if (authorSplit.length == 0) {
-      validation.add(" Autor zu kurz: " + author);
+      validationError.add(" Autor zu kurz: " + author);
     } else if (authorSplit.length == 1) {
       //      Klein Georg -> Vorname Nachname
       //      Loriot ->Nachname
+      //    André-Lang/Rast, Harald
+      final String firstName = "";
+      final String lastName = authorSplit[0];
+      authorFixed = new Author(firstName, lastName);
 
+      validationInfo.add("Nur ein Name zu Autor angegeben, verarbeite als Nachname: " + lastName);
     } else {
       //    author=Raabe, Wilhelm
-      //    André-Lang/Rast, Harald
       String firstName = authorSplit[1];
       String lastName = authorSplit[0];
       //    author=Hampel, Thomas (Hrsg.) => Thomas Hampel (Hrsg.)
       final int hrsgIndex = firstName.indexOf("(Hrsg.)");
       if (hrsgIndex > 0) {
         firstName = firstName.substring(0, hrsgIndex);
-        lastName += "(Hrsg.)";
+        lastName += " (Hrsg.)";
       }
       authorFixed = new Author(firstName, lastName);
     }
-
-    final String titleFixed = title.trim();
-    if (titleFixed.isEmpty()) {
-      validation.add("Titel ist leer");
-    }
-    //    shortDescription= linefeed
-    final String shortDescriptionFixed = shortDescription.trim();
-    if (shortDescriptionFixed.isEmpty()) {
-      validation.add("Kurzbeschreibung ist leer");
-    }
-
-    //    genres=Humor, Satire
-    final String[] genresSplit = genres.trim().split(",");
-    final Set<String> genresFixed = new HashSet<String>(Arrays.asList(genresSplit));
-
-    Date publicationYearFixed = null;
-    try {
-      publicationYearFixed = new Date(Integer.valueOf(publicationYear), 0, 0);
-    } catch (final NumberFormatException nfe) {
-      validation.add("Erscheinungsjahr ist keine Zahl: " + publicationYear);
-    }
-    Integer countFixed = null;
-    try {
-      countFixed = Integer.valueOf(count);
-    } catch (final NumberFormatException nfe) {
-      validation.add("Umfang ist keine Zahl: " + count);
-    }
-
-    if (!validation.isEmpty()) {
-      System.err.println("Datensatz ungültig: " + validation.toString());
-      return null;
-    }
-
-    final String id = UUID.nameUUIDFromBytes(mediaNumberFixed.getBytes()).toString();
-
-    return new MediaItem(id, mediaNumberFixed, titleFixed, shortDescriptionFixed, authorFixed, publicationYearFixed, mediaKind, countFixed,
-                         genresFixed);
+    return authorFixed;
   }
 
-  private String getMediaNumber(final List<String> validation) {
+  private String getMediaNumber(final List<String> validationError, final List<String> validationInfo) {
     //    M60 126 377 X
     //    ""
     final String mediaNumberTrimmed = mediaNumber.replace(" ", "");
     if (mediaNumberTrimmed.isEmpty()) {
-      validation.add(" ist leer");
+      validationError.add(" ist leer");
       return null;
     }
 
     //    M595661201 M601263781
     if (!mediaNumberTrimmed.startsWith("M")) {
-      validation.add(" beginnt nicht mit 'M'");
+      validationError.add(" beginnt nicht mit 'M'");
       return null;
     }
 
     // M59566580X
     // validate 9 chars, "X" is valid checksum
     if (mediaNumberTrimmed.substring(1).length() != 9) {
-      validation.add(" enthält nicht 9 Stellen nach führendem 'M'");
+      validationError.add(" enthält nicht 9 Stellen nach führendem 'M'");
       return null;
     }
 

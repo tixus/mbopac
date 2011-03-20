@@ -1,6 +1,5 @@
 package de.tixus.mb.opac.factory;
 
-import java.util.Date;
 import java.util.Set;
 import java.util.UUID;
 
@@ -29,7 +28,7 @@ public class ObjectifyTestFactory {
   public MediaItem createMediaItem(final String title, final String mediaNumber) {
     final String shortDescription = null;
     final Author author = null;
-    final Date publicationYear = null;
+    final Integer publicationYear = null;
     final MediaKind kind = null;
     final Set<String> genres = null;
     return new MediaItem(UUID.nameUUIDFromBytes(mediaNumber.getBytes()).toString(), mediaNumber, title, shortDescription, author,

@@ -1,4 +1,32 @@
-<!-- Indices written at Sun, 13 Mar 2011 11:50:02 UTC -->
+<!-- Indices written at Sun, 20 Mar 2011 15:11:19 CET -->
 
-<datastore-indexes/>
+<datastore-indexes>
 
+    <!-- Used 7 times in query history -->
+    <datastore-index kind="MediaItem" ancestor="false" source="auto">
+        <property name="author.lastName" direction="asc"/>
+        <property name="title" direction="asc"/>
+    </datastore-index>
+
+    <!-- Used 1 time in query history -->
+    <datastore-index kind="MediaItem" ancestor="false" source="auto">
+        <property name="author.firstName" direction="asc"/>
+        <property name="author.lastName" direction="asc"/>
+        <property name="title" direction="asc"/>
+    </datastore-index>
+
+    <!-- Used 2 times in query history -->
+    <datastore-index kind="MediaItem" ancestor="false" source="auto">
+        <property name="mediaKind" direction="asc"/>
+        <property name="title" direction="asc"/>
+    </datastore-index>
+
+    <!-- Used 1 time in query history -->
+    <datastore-index kind="MediaItem" ancestor="false" source="auto">
+        <property name="author.firstName" direction="asc"/>
+        <property name="author.lastName" direction="asc"/>
+        <property name="mediaKind" direction="asc"/>
+        <property name="title" direction="asc"/>
+    </datastore-index>
+
+</datastore-indexes>

@@ -15,7 +15,6 @@
  */
 package de.tixus.mb.opac.client.view;
 
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -35,7 +34,6 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 
 import de.tixus.mb.opac.client.presenter.MediaItemController;
-import de.tixus.mb.opac.shared.FieldVerifier;
 import de.tixus.mb.opac.shared.entities.Author;
 import de.tixus.mb.opac.shared.entities.MediaKind;
 
@@ -99,17 +97,17 @@ public class MediaItemSearchForm extends Composite {
         final String text = authorBox.getText();
         final Author author;
         if (!text.isEmpty()) {
-          if (!FieldVerifier.isWhiteSpaceSeparatedName(text)) {
-            errorLabel.setText("Bitte Vor- und Nachnamen eingeben. (z.B. Max Frisch)");
-            return;
-          }
           final String[] split = text.split(" ");
-          author = new Author(split[0], split[1]);
+          if (split.length == 2) {
+            author = new Author(split[0], split[1]);
+          } else {
+            author = new Author(null, split[0]);
+          }
         } else {
           author = null;
         }
 
-        final Date publicationYear = yearBox.getValue();
+        final Integer publicationYear = yearBox.getValue() != null ? yearBox.getValue().getYear() : null;
         final MediaKind selectedMediaKind = getMediaKind();
         final Set<String> genreSet = getGenre();
         mediaItemController.search(mediaNumber, title, author, publicationYear, selectedMediaKind, genreSet);
