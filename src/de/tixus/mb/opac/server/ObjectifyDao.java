@@ -6,6 +6,7 @@ package de.tixus.mb.opac.server;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import com.googlecode.objectify.Key;
@@ -57,6 +58,11 @@ public class ObjectifyDao {
   public <T> void delete(final T... object) {
     // TODO check throws EntityNotFoundException 
     daoBase.ofy().delete(object);
+  }
+
+  public <T> void delete(final List<T> objects) {
+    // TODO check throws EntityNotFoundException 
+    daoBase.ofy().delete(objects);
   }
 
   public <T> T get(final Key<T> key) {
@@ -116,19 +122,19 @@ public class ObjectifyDao {
     return list;
   }
 
-  public List<MediaItem> find(final Class<MediaItem> clazz, final Map filterMap) {
+  public List<MediaItem> find(final Class<MediaItem> clazz, final Map<String, Object> filterMap) {
     final Query<MediaItem> query = daoBase.ofy().query(clazz);
 
-    final Set<Map.Entry> entrySet = filterMap.entrySet();
-    for (final Iterator iterator = entrySet.iterator(); iterator.hasNext();) {
-      final Map.Entry entry = (Map.Entry) iterator.next();
+    final Set<Entry<String, Object>> entrySet = filterMap.entrySet();
+    for (final Iterator<Entry<String, Object>> iterator = entrySet.iterator(); iterator.hasNext();) {
+      final Map.Entry<String, Object> entry = iterator.next();
 
       final Object value = entry.getValue();
       if (value == null || "".equals(value)) {
         continue;
       }
 
-      query.filter(entry.getKey().toString(), entry.getValue());
+      query.filter(entry.getKey(), entry.getValue());
     }
 
     final List<MediaItem> list = query.list();

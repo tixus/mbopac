@@ -30,29 +30,21 @@ public class DataImporter {
     listAll.addAll(dao.listAll(Person.class));
     listAll.addAll(dao.listAll(Lending.class));
 
-    dao.delete(listAll.toArray());
+    dao.delete(listAll);
   }
 
   public void importMediaItemData() {
-    //    final String number = "M123456789";
-    //    final MediaKind[] mediaKind = MediaKind.values();
-    //
-    //    for (int i = 0; i < author.length; i++) {
-    //      final String mediaNumber = number + i;
-    //      final String id = UUID.nameUUIDFromBytes(mediaNumber.getBytes()).toString();
-    //      final Set<String> genreSet = new HashSet<String>(Arrays.asList(genres[genres.length % (i + 1)]));
-    //      final Integer count = i;
-    //      final MediaItem mediaItem = new MediaItem(id, mediaNumber, author[i] + "Titel", author[i] + "Kurzbeschreibung",
-    //                                                new Author("Vorname", author[i]), 2010, mediaKind[i % mediaKind.length], count, genreSet);
-    //
-    //      dao.create(mediaItem);
-    //    }
-
+    final List<MediaItem> allMediaItems = dao.listAll(MediaItem.class);
     try {
-      final List<MediaItem> mediaItems = csvImporter.parse("C:/project/selfstudy/opac/mbopac/war/WEB-INF/Nachtragskatalog_2011-book.csv",
-                                                           MediaKind.Book);
+      final String fileNameBook = "C:/project/selfstudy/opac/mbopac/war/WEB-INF/Nachtragskatalog_2011-book.csv";
+      final String fileNameCd = "C:/project/selfstudy/opac/mbopac/war/WEB-INF/Nachtragskatalog_2011-cd.csv";
+      final String fileNameBigFont = "C:/project/selfstudy/opac/mbopac/war/WEB-INF/Nachtragskatalog_2011-bigfont.csv";
 
-      // TODO 
+      final List<MediaItem> mediaItems = csvImporter.parse(fileNameBook, MediaKind.Book);
+      mediaItems.addAll(csvImporter.parse(fileNameCd, MediaKind.CompactDisc));
+      mediaItems.addAll(csvImporter.parse(fileNameBigFont, MediaKind.BigFont));
+
+      int i = 0;
       for (final MediaItem mediaItem : mediaItems) {
         final Key<MediaItem> key = new Key<MediaItem>(MediaItem.class, mediaItem.getId());
         if (dao.contains(key)) {
@@ -60,6 +52,7 @@ public class DataImporter {
           continue;
         }
         dao.create(mediaItem);
+        System.out.println("Imported: #" + i++ + "." + mediaItem);
       }
 
     } catch (final IOException e) {
@@ -71,10 +64,13 @@ public class DataImporter {
   public void importPersonData() {
     final Gender[] gender = Gender.values();
 
+    final String[] lastNames = { "Zeisig", "Sperling", "Taube", "Spatz", "Amsel", "Drossel", "Fink", "Meise", "Specht", "Habicht" };
+    final String[] firstNames = { "Frank", "Tino", "Gerhard", "Uwe", "Ulla", "Erika", "Katrin", "Peter", "Petra", "Silke" };
+
     for (int i = 0; i < 10; i++) {
 
-      final String lastName = "Musterfrau" + i;
-      final String firstName = "Suse" + i;
+      final String lastName = lastNames[i];
+      final String firstName = firstNames[i];
       final String email = firstName + "." + lastName + "@example.com";
       final String userName = "11007411" + i;
       final String password = "1970";

@@ -6,15 +6,12 @@ import com.google.gwt.cell.client.Cell;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
-import com.google.gwt.event.logical.shared.SelectionEvent;
-import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.cellview.client.HasKeyboardPagingPolicy.KeyboardPagingPolicy;
 import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
@@ -28,6 +25,7 @@ import com.google.gwt.view.client.SingleSelectionModel;
 import de.tixus.mb.opac.client.presenter.LendingController;
 import de.tixus.mb.opac.client.presenter.MediaItemController;
 import de.tixus.mb.opac.client.presenter.PersonsController;
+import de.tixus.mb.opac.client.view.AdminForm;
 import de.tixus.mb.opac.client.view.LendingForm;
 import de.tixus.mb.opac.client.view.MediaItemCell;
 import de.tixus.mb.opac.client.view.MediaItemDetailForm;
@@ -57,19 +55,6 @@ public class MbopacMainView implements EntryPoint {
    * This is the entry point method.
    */
   public void onModuleLoad() {
-    persistenceService.setUp(new AsyncCallback<Void>() {
-
-      @Override
-      public void onSuccess(final Void result) {
-
-      }
-
-      @Override
-      public void onFailure(final Throwable caught) {
-        throw new RuntimeException(caught);
-      }
-    });
-
     // Master detail view on media items
     final HandlerManager eventBus = new HandlerManager(null);
 
@@ -107,8 +92,8 @@ public class MbopacMainView implements EntryPoint {
 
     // Full catalog entries and detail for media item. 
     final SplitLayoutPanel catalogPanel = new SplitLayoutPanel();
-    catalogPanel.addNorth(mediaItemSearchForm, 300);
-    catalogPanel.addWest(catalogPagerPanel, 700);
+    catalogPanel.addNorth(mediaItemSearchForm, 200);
+    catalogPanel.addWest(catalogPagerPanel, 800);
     catalogPanel.add(mediaItemDetailForm);
 
     // A person's lending items overview and new lending actions.
@@ -169,35 +154,15 @@ public class MbopacMainView implements EntryPoint {
     final SimplePanel titlePanel = new SimplePanel();
     titlePanel.add(new Label("Sie sind angemeldet als: Tino Sperlich seit " + new Date()));
 
+    final DockLayoutPanel adminPanel = new DockLayoutPanel(Unit.EM);
+    final AdminForm adminForm = new AdminForm(persistenceService);
+    adminPanel.add(adminForm);
+
     mainPanel.add(titlePanel, "Information");
     mainPanel.add(catalogPanel, "Katalog");
     mainPanel.add(accountPanel, "Benutzerkonto");
     mainPanel.add(allUsersPanel, "Benutzer");
-    mainPanel.addSelectionHandler(new SelectionHandler<Integer>() {
-
-      @Override
-      public void onSelection(final SelectionEvent<Integer> event) {
-        switch (event.getSelectedItem()) {
-          case 0:
-            // info
-            break;
-          case 1:
-            // Katalog
-            mediaItemController.refresh();
-            break;
-          case 2:
-            // Benutzerkonto
-            personsController.refresh();
-            break;
-          case 3:
-            //Benutzer
-            break;
-          case -1:
-          default:
-            //do nothing
-        }
-      }
-    });
+    mainPanel.add(adminPanel, "Admin");
 
     final RootLayoutPanel rp = RootLayoutPanel.get();
     rp.add(mainPanel);

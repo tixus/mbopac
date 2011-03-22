@@ -40,17 +40,46 @@ public class MediaItemCell extends AbstractCell<MediaItem> {
 
     sb.appendHtmlConstant("<table>");
 
-    sb.appendHtmlConstant("<tr><td rowspan='3'>");
+    sb.appendHtmlConstant("<tr>");
+    sb.appendHtmlConstant("<td rowspan='2'>");
     sb.appendHtmlConstant(value.isLent() ? awayImageHtml : availableImageHtml);
     sb.appendHtmlConstant("</td>");
-    sb.appendHtmlConstant("<tr><td rowspan='3'>");
+
+    sb.appendHtmlConstant("<td rowspan='2'>");
     sb.appendHtmlConstant(mediaKindImage(value));
     sb.appendHtmlConstant("</td>");
+
+    sb.appendHtmlConstant("<td>");
+    sb.appendHtmlConstant("Autor: ");
+    sb.appendHtmlConstant("</td>");
+
     sb.appendHtmlConstant("<td style='font-size:95%;'>");
+    sb.appendEscaped(value.getAuthor().toString());
+    sb.appendHtmlConstant("</td>");
+
+    sb.appendHtmlConstant("<td>");
+    sb.appendHtmlConstant("Mediennummer: ");
+    sb.appendHtmlConstant("</td>");
+
+    sb.appendHtmlConstant("<td>");
     sb.appendEscaped(value.getMediaNumber());
-    sb.appendHtmlConstant("</td></tr><tr><td>");
+    sb.appendHtmlConstant("</td>");
+
+    sb.appendHtmlConstant("</tr>");
+    sb.appendHtmlConstant("<tr>");
+
+    sb.appendHtmlConstant("<td>");
+    sb.appendHtmlConstant("Titel: ");
+    sb.appendHtmlConstant("</td>");
+
+    sb.appendHtmlConstant("<td>");
     sb.appendEscaped(value.getTitle());
-    sb.appendHtmlConstant("</td></tr></table>");
+    sb.appendHtmlConstant("</td>");
+
+    sb.appendHtmlConstant("</tr>");
+    sb.appendHtmlConstant("<tr>");
+
+    sb.appendHtmlConstant("</tr></table>");
   }
 
   private String mediaKindImage(final MediaItem value) {

@@ -16,89 +16,108 @@
 		}
 	</ui:style>
 
-	<g:HTMLPanel>
-		<table>
-			<tr>
-				<td colspan='2' align='center' class='{style.header}'>
-					<ui:msg key='mediaItemTitle'>Medien-Eintrag suchen</ui:msg>
-				</td>
-			</tr>
-			<tr>
-				<td class='{style.label}'>
-					<ui:msg key='error'>Information:</ui:msg>
-				</td>
-				<td>
-					<g:Label ui:field='errorLabel' />
-				</td>
-			</tr>
-			<tr>
-				<td class='{style.label}'>
-					<ui:msg key='mediaNumberBox'>Mediennummer:</ui:msg>
-				</td>
-				<td>
-					<g:TextBox ui:field='mediaNumberBox' />
-				</td>
-			</tr>
-			<tr>
-				<td class='{style.label}'>
-					<ui:msg key='authorBox'>Autor</ui:msg>
-				</td>
-				<td>
-					<g:TextBox ui:field='authorBox' />
-				</td>
-			</tr>
-			<tr>
-				<td class='{style.label}'>
-					<ui:msg key='titleBox'>Titel:</ui:msg>
-				</td>
-				<td>
-					<g:TextBox ui:field='titleBox' />
-				</td>
-			</tr>
-			<tr>
-				<td class='{style.label}'>
-					<ui:msg key='yearBox'>Erscheinungsjahr:</ui:msg>
-				</td>
-				<td>
-					<d:DateBox ui:field='yearBox' />
-				</td>
-			</tr>
-			<tr>
-				<td class='{style.label}'>
-					<ui:msg key='mediaKindBox'>Medientyp:</ui:msg>
-				</td>
-				<td>
-					<g:ListBox ui:field='mediaKindBox' />
-				</td>
-			</tr>
-			<tr>
-				<td class='{style.label}'>
-					<ui:msg key='genreBox'>Genre:</ui:msg>
-				</td>
-				<td>
-					<g:ListBox ui:field='genreBox' />
-				</td>
-			</tr>
-			<tr>
-				<td class='{style.label}'>
-					<ui:msg key='lentLabel'>Ausleihstatus:</ui:msg>
-				</td>
-				<td>
-					<g:Label ui:field='lentLabel' />
-				</td>
-			</tr>
-			<tr>
-				<td colspan='2' align='center'>
-					<g:Button ui:field='searchButton'>
-						<ui:msg key='mediaItemSearchFormSearchButton'>Suche</ui:msg>
-					</g:Button>
-					&nbsp;
-					<g:Button ui:field='clearButton'>
-						<ui:msg key='mediaItemSearchFormClearButton'>Neue Suche</ui:msg>
-					</g:Button>
-					&nbsp;
-				</td>
-			</tr>
-		</table>
-	</g:HTMLPanel>
+	<g:DockLayoutPanel unit='EM'>
+		<g:north size='4'>
+			<g:HTMLPanel>
+				<table>
+					<tr>
+						<td colspan='2' align='center' class='{style.header}'>
+							<ui:msg key='mediaItemTitle'>Medien-Eintrag suchen</ui:msg>
+						</td>
+					</tr>
+					<tr>
+						<td class='{style.label}'>
+							<ui:msg key='error'>Information:</ui:msg>
+						</td>
+						<td>
+							<g:Label ui:field='errorLabel' />
+						</td>
+					</tr>
+				</table>
+			</g:HTMLPanel>
+		</g:north>
+		<g:west size='40'>
+			<g:HTMLPanel>
+				<table>
+					<tr>
+						<td class='{style.label}'>
+							<ui:msg key='mediaNumberBox'>Mediennummer:</ui:msg>
+						</td>
+						<td>
+							<g:TextBox ui:field='mediaNumberBox' width='8em' />
+						</td>
+					</tr>
+					<tr>
+						<td class='{style.label}'>
+							<ui:msg key='authorBox'>Autor</ui:msg>
+						</td>
+						<td>
+							<g:TextBox ui:field='authorBox' width='10em' />
+						</td>
+					</tr>
+					<tr>
+						<td class='{style.label}'>
+							<ui:msg key='titleBox'>Titel:</ui:msg>
+						</td>
+						<td>
+							<g:TextBox ui:field='titleBox' width='20em' />
+						</td>
+					</tr>
+					<tr>
+						<td class='{style.label}'>
+							<ui:msg key='yearBox'>Erscheinungsjahr:</ui:msg>
+						</td>
+						<td>
+							<d:DateBox ui:field='yearBox' width='4em' />
+						</td>
+					</tr>
+					<tr>
+						<td colspan='2' align='center'>
+							<g:Button ui:field='searchButton'>
+								<ui:msg key='mediaItemSearchFormSearchButton'>Suche</ui:msg>
+							</g:Button>
+							&nbsp;
+							<g:Button ui:field='clearButton'>
+								<ui:msg key='mediaItemSearchFormClearButton'>Neue Suche</ui:msg>
+							</g:Button>
+							&nbsp;
+						</td>
+					</tr>
+				</table>
+			</g:HTMLPanel>
+		</g:west>
+		<g:east size='40'>
+			<g:HTMLPanel>
+				<table>
+					<tr>
+						<td class='{style.label}'>
+							<ui:msg key='mediaKindBox'>Medientyp:</ui:msg>
+						</td>
+						<td>
+							<g:ListBox ui:field='mediaKindBox' />
+						</td>
+					</tr>
+					<tr>
+						<td class='{style.label}'>
+							<ui:msg key='genreBox'>Genre:</ui:msg>
+						</td>
+						<td>
+							<g:ListBox ui:field='genreBox' multipleSelect='true'
+								visibleItemCount='5' />
+						</td>
+					</tr>
+					<tr>
+						<td class='{style.label}'>
+							<ui:msg key='lentLabel'>Ausleihstatus:</ui:msg>
+						</td>
+						<td>
+							<g:Label ui:field='lentLabel' />
+						</td>
+					</tr>
+				</table>
+			</g:HTMLPanel>
+		</g:east>
+	</g:DockLayoutPanel>
+
+
 </ui:UiBinder>

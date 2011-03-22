@@ -4,7 +4,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.Ostermiller.util.CSVParser;
 import com.Ostermiller.util.LabeledCSVParser;
@@ -19,12 +21,23 @@ public class CSVImporter {
     // Mediennummer, Autor, Titel, Erscheinungsjahr, Umfang, Genre, Kurze Inhaltsangabe
     final LabeledCSVParser labeledCSVParser = new LabeledCSVParser(new CSVParser(new FileInputStream(fileName), ';'));
 
-    final String[] labels = labeledCSVParser.getLabels();
-    // TODO assert labels present
-    System.out.println("Spaltenamen: " + Arrays.asList(labels));
-    final List<MediaItem> mediaItems = new ArrayList<MediaItem>();
-    while (labeledCSVParser.getLine() != null) {
+    final String[] parsedLabels = labeledCSVParser.getLabels();
+    final String[] requiredLabels = { "Mediennummer", "Autor", "Titel", "Erscheinungsjahr", "Umfang", "Genre", "Kurze Inhaltsangabe" };
 
+    System.err.println("Lese Datei: " + fileName);
+    System.err.println("Erforderliche Spaltenamen: " + Arrays.asList(requiredLabels));
+    System.err.println("Gefundene Spaltennamen: " + Arrays.asList(parsedLabels));
+
+    //    final List<String> requiredLabelsList = Arrays.asList(requiredLabels);
+    //    if (!Arrays.deepEquals(parsedLabels, requiredLabels)) {
+    //      System.err.println("Erforderliche Spaltenamen: " + Arrays.asList(requiredLabels));
+    //      System.err.println("Gefundene Spaltennamen: " + Arrays.asList(parsedLabels));
+    //      return Collections.EMPTY_LIST;
+    //    }
+
+    final List<MediaItem> mediaItems = new ArrayList<MediaItem>();
+    final Set<String> allGenres = new HashSet<String>();
+    while (labeledCSVParser.getLine() != null) {
       final String mediaNumber = labeledCSVParser.getValueByLabel("Mediennummer");
       final String author = labeledCSVParser.getValueByLabel("Autor");
       final String title = labeledCSVParser.getValueByLabel("Titel");
@@ -41,6 +54,7 @@ public class CSVImporter {
       final MediaItem mediaItem = mediaItemHolder.toMediaItem();
       if (mediaItem != null) {
         mediaItems.add(mediaItem);
+        allGenres.addAll(mediaItem.getGenres());
       }
     }
 

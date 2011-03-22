@@ -80,12 +80,23 @@ public class MediaItemDetailForm extends Composite {
   Label errorLabel;
 
   private MediaItem mediaItem;
-  private final String[] genres = new String[] { "Belletristik", "Krimi", "Technik", "Thriller", "Frauen", "Gesellschaft und Politik" };
+
+  //TODO dynamic
+  private final String[] genres = new String[] { "Familie", "Reisen", "Biografie", "Hist. Roman", "Tagebuch", "Tragikkomödie", "Hamburg",
+                                                "Psychologie", "Anthologie", "Satire", "Medizin", "Fantasy", "Roman", "Naturwissensch.",
+                                                "med. Erlebnisbericht", "Thriller", "Ratgeber", "Reportage", "Plattdeutsch", "Biographie",
+                                                "Aufsatzsammlung", "Autobiografie", "Religion", "Hist. Krimi", "Erzählung", "Klassiker",
+                                                "Meistererzählung", "Historisch", "Geschichte", "Reisebericht", "Wirtschaft", "Krimi",
+                                                "Humor", "Belletristik", "Liebe", "Wissenschaft", "Frauen", "Erlebnisbericht", "Märchen",
+                                                "Politik", "Autobiographie", "Lyrik" };
 
   public MediaItemDetailForm(final MediaItemController mediaItemController) {
     initWidget(uiBinder.createAndBindUi(this));
     // TODO updating the unique identifier needs more than property setting
     mediaNumberBox.setEnabled(false);
+    //TODO implement later
+    createButton.setEnabled(false);
+    updateButton.setEnabled(false);
 
     final DateTimeFormat dateFormat = DateTimeFormat.getFormat(PredefinedFormat.YEAR);
     yearBox.setFormat(new DateBox.DefaultFormat(dateFormat));
@@ -119,7 +130,6 @@ public class MediaItemDetailForm extends Composite {
         }
         final String[] split = text.split(" ");
         final Author author = new Author(split[0], split[1]);
-
         final Integer publicationYear = yearBox.getValue() != null ? yearBox.getValue().getYear() : null;
         final String shortDescription = shortDescriptionBox.getText();
         // FIXME list to set
@@ -172,7 +182,7 @@ public class MediaItemDetailForm extends Composite {
 
   public void setItem(final MediaItem mediaItem) {
     this.mediaItem = mediaItem;
-    updateButton.setEnabled(mediaItem != null);
+    //    updateButton.setEnabled(mediaItem != null);
     if (mediaItem != null) {
       mediaNumberBox.setText(mediaItem.getMediaNumber());
       titleBox.setText(mediaItem.getTitle());

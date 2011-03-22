@@ -4,8 +4,10 @@ import java.util.List;
 import java.util.Set;
 
 import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.ListDataProvider;
 import com.googlecode.objectify.Key;
@@ -133,13 +135,22 @@ public class MediaItemController implements Controller<MediaItem> {
       public void onSuccess(final Void result) {
         final List<MediaItem> list = dataProvider.getList();
         final int indexOf = list.indexOf(mediaItem);
-
-        list.set(indexOf, mediaItem);
+        if (indexOf != -1) {
+          list.set(indexOf, mediaItem);
+        }
         Window.alert("Speichern ok!");
       }
     });
 
     dataProvider.refresh();
+  }
+
+  public static void showWaitCursor() {
+    DOM.setStyleAttribute(RootPanel.getBodyElement(), "cursor", "wait");
+  }
+
+  public static void showDefaultCursor() {
+    DOM.setStyleAttribute(RootPanel.getBodyElement(), "cursor", "default");
   }
 
   public void search(final String mediaNumber,
@@ -149,6 +160,7 @@ public class MediaItemController implements Controller<MediaItem> {
                      final MediaKind selectedMediaKind,
                      final Set<String> genreSet) {
 
+    showWaitCursor();
     persistenceService.search(mediaNumber, title, author, publicationYear, selectedMediaKind, genreSet,
                               new AsyncCallback<List<MediaItem>>() {
 
@@ -157,11 +169,13 @@ public class MediaItemController implements Controller<MediaItem> {
                                   final List<MediaItem> list = dataProvider.getList();
                                   list.clear();
                                   list.addAll(result);
+                                  showDefaultCursor();
                                 }
 
                                 @Override
                                 public void onFailure(final Throwable caught) {
                                   Window.alert("Server-Fehler: " + caught.getMessage());
+                                  showDefaultCursor();
                                 }
                               });
   }

@@ -125,15 +125,17 @@ public class PersistenceServiceImpl extends RemoteServiceServlet implements Pers
                                 final MediaKind mediaKind,
                                 final Set<String> genreSet) {
 
-    final Map filterMap = new HashMap();
-    // exakt match
-    filterMap.put("mediaNumber", mediaNumber);
-    // like match
-    if (title != null) {
-      // http://googlecode.blogspot.com/2010/05/google-app-engine-basic-text-search.html
+    final Map<String, Object> filterMap = new HashMap<String, Object>();
+    // like match - only one allowed per query: "Only one inequality filter per query is supported.  Encountered both mediaNumber and title"
+    // http://googlecode.blogspot.com/2010/05/google-app-engine-basic-text-search.html
+    if (mediaNumber != null && !mediaNumber.isEmpty()) {
+      filterMap.put("mediaNumber >=", mediaNumber);
+      filterMap.put("mediaNumber <", mediaNumber + "\ufffd");
+    } else if (title != null && !title.isEmpty()) {
       filterMap.put("title >=", title);
       filterMap.put("title <", title + "\ufffd");
     }
+
     if (author != null) {
       final String firstName = author.getFirstName();
       if (firstName != null) {
@@ -144,6 +146,7 @@ public class PersistenceServiceImpl extends RemoteServiceServlet implements Pers
         filterMap.put("author.lastName", lastName);
       }
     }
+    // exakt match or null
     filterMap.put("publicationYear", publicationYear);
     filterMap.put("mediaKind", mediaKind);
     filterMap.put("genres IN", genreSet);

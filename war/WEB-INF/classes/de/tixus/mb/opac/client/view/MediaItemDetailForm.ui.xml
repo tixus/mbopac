@@ -36,7 +36,7 @@
 					<ui:msg key='mediaNumberBox'>Mediennummer:</ui:msg>
 				</td>
 				<td>
-					<g:TextBox ui:field='mediaNumberBox' />
+					<g:TextBox ui:field='mediaNumberBox' width='8em' />
 				</td>
 			</tr>
 			<tr>
@@ -44,7 +44,7 @@
 					<ui:msg key='authorBox'>Autor</ui:msg>
 				</td>
 				<td>
-					<g:TextBox ui:field='authorBox' />
+					<g:TextBox ui:field='authorBox' width='10em'/>
 				</td>
 			</tr>
 			<tr>
@@ -52,7 +52,7 @@
 					<ui:msg key='titleBox'>Titel:</ui:msg>
 				</td>
 				<td>
-					<g:TextBox ui:field='titleBox' />
+					<g:TextBox ui:field='titleBox' width='20em'/>
 				</td>
 			</tr>
 			<tr>
@@ -60,7 +60,7 @@
 					<ui:msg key='shortDescriptionBox'>Kurzbeschreibung:</ui:msg>
 				</td>
 				<td>
-					<g:TextArea ui:field='shortDescriptionBox' />
+					<g:TextArea ui:field='shortDescriptionBox' characterWidth='60' visibleLines ='3'/>
 				</td>
 			</tr>
 			<tr>
@@ -68,7 +68,7 @@
 					<ui:msg key='yearBox'>Erscheinungsjahr:</ui:msg>
 				</td>
 				<td>
-					<d:DateBox ui:field='yearBox' />
+					<d:DateBox ui:field='yearBox' width='4em'/>
 				</td>
 			</tr>
 			<tr>
@@ -84,7 +84,7 @@
 					<ui:msg key='countBox'>Umfang:</ui:msg>
 				</td>
 				<td>
-					<g:TextBox ui:field='countBox' />
+					<g:TextBox ui:field='countBox' width='6em'/>
 					<g:Label ui:field='countBoxLabel' />
 				</td>
 			</tr>

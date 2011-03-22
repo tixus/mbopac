@@ -68,7 +68,13 @@ public class MediaItemSearchForm extends Composite {
   @UiField
   Label errorLabel;
 
-  private final String[] genres = new String[] { "Belletristik", "Krimi", "Technik", "Thriller", "Frauen", "Gesellschaft und Politik" };
+  private final String[] genres = new String[] { "Familie", "Reisen", "Biografie", "Hist. Roman", "Tagebuch", "Tragikkomödie", "Hamburg",
+                                                "Psychologie", "Anthologie", "Satire", "Medizin", "Fantasy", "Roman", "Naturwissensch.",
+                                                "med. Erlebnisbericht", "Thriller", "Ratgeber", "Reportage", "Plattdeutsch", "Biographie",
+                                                "Aufsatzsammlung", "Autobiografie", "Religion", "Hist. Krimi", "Erzählung", "Klassiker",
+                                                "Meistererzählung", "Historisch", "Geschichte", "Reisebericht", "Wirtschaft", "Krimi",
+                                                "Humor", "Belletristik", "Liebe", "Wissenschaft", "Frauen", "Erlebnisbericht", "Märchen",
+                                                "Politik", "Autobiographie", "Lyrik" };
 
   public MediaItemSearchForm(final MediaItemController mediaItemController) {
     initWidget(uiBinder.createAndBindUi(this));
@@ -87,6 +93,8 @@ public class MediaItemSearchForm extends Composite {
     for (final MediaKind mediaKind : values) {
       mediaKindBox.addItem(mediaKind.getDescription());
     }
+    // TODO look for some kinds
+    //    mediaKindBox.setVisibleItemCount(mediaKindBox.getItemCount());
 
     // Handle events.
     searchButton.addClickHandler(new ClickHandler() {
@@ -107,7 +115,7 @@ public class MediaItemSearchForm extends Composite {
           author = null;
         }
 
-        final Integer publicationYear = yearBox.getValue() != null ? yearBox.getValue().getYear() : null;
+        final Integer publicationYear = yearBox.getValue() != null ? yearBox.getValue().getYear() + 1900 : null;
         final MediaKind selectedMediaKind = getMediaKind();
         final Set<String> genreSet = getGenre();
         mediaItemController.search(mediaNumber, title, author, publicationYear, selectedMediaKind, genreSet);
@@ -122,8 +130,8 @@ public class MediaItemSearchForm extends Composite {
         titleBox.setText("");
         authorBox.setText("");
         yearBox.setValue(null);
-        mediaKindBox.setSelectedIndex(-1);
-        genreBox.setSelectedIndex(-1);
+        mediaKindBox.setSelectedIndex(0);
+        genreBox.setSelectedIndex(0);
       }
     });
   }
@@ -148,7 +156,12 @@ public class MediaItemSearchForm extends Composite {
    * @return null if all kinds are requested
    */
   private MediaKind getMediaKind() {
-    final String mediaKindValue = mediaKindBox.getValue(mediaKindBox.getSelectedIndex());
+    final int selectedIndex = mediaKindBox.getSelectedIndex();
+    if (selectedIndex == -1) {
+      return null;
+    }
+
+    final String mediaKindValue = mediaKindBox.getValue(selectedIndex);
     final MediaKind[] values = MediaKind.values();
     for (final MediaKind mediaKind : values) {
       if (mediaKindValue.equals(mediaKind.getDescription())) {
