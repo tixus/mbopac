@@ -43,20 +43,6 @@ public class MediaItemController implements Controller<MediaItem> {
       }
 
     });
-
-    final List<MediaItem> mediaItems = dataProvider.getList();
-    persistenceService.listAllMediaItems(new AsyncCallback<List<MediaItem>>() {
-
-      @Override
-      public void onSuccess(final List<MediaItem> result) {
-        mediaItems.addAll(result);
-      }
-
-      @Override
-      public void onFailure(final Throwable caught) {
-        Window.alert("Server-Fehler: " + caught.getMessage());
-      }
-    });
   }
 
   private void doMediaItemUpdated(final String id) {

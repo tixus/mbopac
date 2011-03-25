@@ -31,7 +31,7 @@ public class PersistenceServiceImpl extends RemoteServiceServlet implements Pers
 
   public void setUp() {
     dataImporter.clear();
-    dataImporter.importMediaItemData();
+    dataImporter.importMediaItemData(getServletContext());
     dataImporter.importPersonData();
     dataImporter.importLendingData();
   }

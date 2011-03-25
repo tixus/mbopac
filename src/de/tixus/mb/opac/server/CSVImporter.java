@@ -2,6 +2,8 @@ package de.tixus.mb.opac.server;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -14,17 +16,24 @@ import com.Ostermiller.util.LabeledCSVParser;
 import de.tixus.mb.opac.shared.entities.MediaItem;
 import de.tixus.mb.opac.shared.entities.MediaKind;
 
-public class CSVImporter {
+public class CsvImporter {
 
   public List<MediaItem> parse(final String fileName, final MediaKind mediaKind) throws IOException {
+    System.err.println("Lese Datei: " + fileName);
 
+    return parse(new FileInputStream(fileName), mediaKind);
+  }
+
+  public List<MediaItem> parse(final InputStream inputStream, final MediaKind mediaKind) throws IOException {
     // Mediennummer, Autor, Titel, Erscheinungsjahr, Umfang, Genre, Kurze Inhaltsangabe
-    final LabeledCSVParser labeledCSVParser = new LabeledCSVParser(new CSVParser(new FileInputStream(fileName), ';'));
+
+    final InputStreamReader utf8InputStreamReader = new InputStreamReader(inputStream, "UTF-8");
+
+    final LabeledCSVParser labeledCSVParser = new LabeledCSVParser(new CSVParser(utf8InputStreamReader, ';'));
 
     final String[] parsedLabels = labeledCSVParser.getLabels();
     final String[] requiredLabels = { "Mediennummer", "Autor", "Titel", "Erscheinungsjahr", "Umfang", "Genre", "Kurze Inhaltsangabe" };
 
-    System.err.println("Lese Datei: " + fileName);
     System.err.println("Erforderliche Spaltenamen: " + Arrays.asList(requiredLabels));
     System.err.println("Gefundene Spaltennamen: " + Arrays.asList(parsedLabels));
 

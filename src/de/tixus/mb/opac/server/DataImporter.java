@@ -1,8 +1,12 @@
 package de.tixus.mb.opac.server;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+import javax.servlet.ServletContext;
 
 import com.googlecode.objectify.Key;
 
@@ -19,7 +23,7 @@ public class DataImporter {
   final String[] author = new String[] { "FrankA", "FrankB", "FrankC", "FrankD", "FrankF" };
 
   private final ObjectifyDao dao;
-  private final CSVImporter csvImporter = new CSVImporter();
+  private final CsvImporter csvImporter = new CsvImporter();
 
   public DataImporter(final ObjectifyDao dao) {
     this.dao = dao;
@@ -33,16 +37,16 @@ public class DataImporter {
     dao.delete(listAll);
   }
 
-  public void importMediaItemData() {
-    final List<MediaItem> allMediaItems = dao.listAll(MediaItem.class);
+  public void importMediaItemData(final ServletContext servletContext) {
     try {
-      final String fileNameBook = "C:/project/selfstudy/opac/mbopac/war/WEB-INF/Nachtragskatalog_2011-book.csv";
-      final String fileNameCd = "C:/project/selfstudy/opac/mbopac/war/WEB-INF/Nachtragskatalog_2011-cd.csv";
-      final String fileNameBigFont = "C:/project/selfstudy/opac/mbopac/war/WEB-INF/Nachtragskatalog_2011-bigfont.csv";
+      final InputStream inputStreamBook = servletContext.getResourceAsStream("/WEB-INF/resources/Nachtragskatalog_2011-book.csv");
+      final InputStream inputStreamCd = servletContext.getResourceAsStream("/WEB-INF/resources/Nachtragskatalog_2011-cd.csv");
+      final InputStream inputStreamBigFont = servletContext.getResourceAsStream("/WEB-INF/resources/Nachtragskatalog_2011-bigfont.csv");
 
-      final List<MediaItem> mediaItems = csvImporter.parse(fileNameBook, MediaKind.Book);
-      mediaItems.addAll(csvImporter.parse(fileNameCd, MediaKind.CompactDisc));
-      mediaItems.addAll(csvImporter.parse(fileNameBigFont, MediaKind.BigFont));
+      final List<MediaItem> mediaItems = new ArrayList<MediaItem>();
+      mediaItems.addAll(csvImporter.parse(inputStreamBook, MediaKind.Book));
+      mediaItems.addAll(csvImporter.parse(inputStreamCd, MediaKind.CompactDisc));
+      mediaItems.addAll(csvImporter.parse(inputStreamBigFont, MediaKind.BigFont));
 
       int i = 0;
       for (final MediaItem mediaItem : mediaItems) {
@@ -56,8 +60,7 @@ public class DataImporter {
       }
 
     } catch (final IOException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      e.printStackTrace(System.err);
     }
   }
 

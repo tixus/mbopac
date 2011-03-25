@@ -86,7 +86,7 @@
 				</table>
 			</g:HTMLPanel>
 		</g:west>
-		<g:east size='40'>
+		<g:center>
 			<g:HTMLPanel>
 				<table>
 					<tr>
@@ -116,7 +116,7 @@
 					</tr>
 				</table>
 			</g:HTMLPanel>
-		</g:east>
+		</g:center>
 	</g:DockLayoutPanel>
 
 

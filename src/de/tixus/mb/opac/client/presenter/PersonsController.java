@@ -19,6 +19,7 @@ public class PersonsController implements Controller<Person> {
 
   public PersonsController(final PersistenceServiceAsync persistenceService) {
     this.persistenceService = persistenceService;
+    // TODO do using search form not full list upfront
     final List<Person> persons = dataProvider.getList();
     persistenceService.listAllPersons(new AsyncCallback<List<Person>>() {
 

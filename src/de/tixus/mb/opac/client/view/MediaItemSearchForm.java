@@ -35,6 +35,7 @@ import com.google.gwt.user.datepicker.client.DateBox;
 
 import de.tixus.mb.opac.client.presenter.MediaItemController;
 import de.tixus.mb.opac.shared.entities.Author;
+import de.tixus.mb.opac.shared.entities.MediaItem;
 import de.tixus.mb.opac.shared.entities.MediaKind;
 
 /**
@@ -68,13 +69,7 @@ public class MediaItemSearchForm extends Composite {
   @UiField
   Label errorLabel;
 
-  private final String[] genres = new String[] { "Familie", "Reisen", "Biografie", "Hist. Roman", "Tagebuch", "Tragikkomödie", "Hamburg",
-                                                "Psychologie", "Anthologie", "Satire", "Medizin", "Fantasy", "Roman", "Naturwissensch.",
-                                                "med. Erlebnisbericht", "Thriller", "Ratgeber", "Reportage", "Plattdeutsch", "Biographie",
-                                                "Aufsatzsammlung", "Autobiografie", "Religion", "Hist. Krimi", "Erzählung", "Klassiker",
-                                                "Meistererzählung", "Historisch", "Geschichte", "Reisebericht", "Wirtschaft", "Krimi",
-                                                "Humor", "Belletristik", "Liebe", "Wissenschaft", "Frauen", "Erlebnisbericht", "Märchen",
-                                                "Politik", "Autobiographie", "Lyrik" };
+  private final String[] genres = MediaItem.genresType;
 
   public MediaItemSearchForm(final MediaItemController mediaItemController) {
     initWidget(uiBinder.createAndBindUi(this));

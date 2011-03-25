@@ -152,7 +152,7 @@ public class MbopacMainView implements EntryPoint {
     // possible size changes.
     final TabLayoutPanel mainPanel = new TabLayoutPanel(1.5, Unit.EM);
     final SimplePanel titlePanel = new SimplePanel();
-    titlePanel.add(new Label("Sie sind angemeldet als: Tino Sperlich seit " + new Date()));
+    titlePanel.add(new Label("Sie sind angemeldet seit " + new Date()));
 
     final DockLayoutPanel adminPanel = new DockLayoutPanel(Unit.EM);
     final AdminForm adminForm = new AdminForm(persistenceService);

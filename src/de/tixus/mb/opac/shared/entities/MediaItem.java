@@ -8,6 +8,7 @@ import java.util.Set;
 
 import javax.persistence.Embedded;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 
 import com.googlecode.objectify.Key;
 
@@ -20,6 +21,16 @@ import com.googlecode.objectify.Key;
 public class MediaItem implements Serializable {
 
   private static final long serialVersionUID = 1L;
+
+  @Transient
+  public final static String[] genresType = new String[] { "Familie", "Reisen", "Biografie", "Hist. Roman", "Tagebuch", "Tragikkomödie",
+                                                          "Hamburg", "Psychologie", "Anthologie", "Satire", "Medizin", "Fantasy", "Roman",
+                                                          "Naturwissensch.", "med. Erlebnisbericht", "Thriller", "Ratgeber", "Reportage",
+                                                          "Plattdeutsch", "Biographie", "Aufsatzsammlung", "Autobiografie", "Religion",
+                                                          "Hist. Krimi", "Erzählung", "Klassiker", "Meistererzählung", "Historisch",
+                                                          "Geschichte", "Reisebericht", "Wirtschaft", "Krimi", "Humor", "Belletristik",
+                                                          "Liebe", "Wissenschaft", "Frauen", "Erlebnisbericht", "Märchen", "Politik",
+                                                          "Autobiographie", "Lyrik" };
 
   @Id
   private String id;
