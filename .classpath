@@ -5,11 +5,10 @@
 	<classpathentry kind="con" path="com.google.appengine.eclipse.core.GAE_CONTAINER"/>
 	<classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="C:/project/selfstudy/opac/mbopac/war/WEB-INF/lib/objectify-2.2.3.jar"/>
-	<classpathentry kind="lib" path="C:/Java/libs/junit-4.8.1.jar"/>
-	<classpathentry kind="lib" path="C:/Java/eclipse/3.6/eclipse/plugins/com.google.appengine.eclipse.sdkbundle.1.4.0_1.4.0.v201012021502/appengine-java-sdk-1.4.0/lib/testing/appengine-testing.jar"/>
-	<classpathentry kind="lib" path="C:/Java/eclipse/3.6/eclipse/plugins/com.google.appengine.eclipse.sdkbundle.1.4.0_1.4.0.v201012021502/appengine-java-sdk-1.4.0/lib/impl/appengine-api-stubs.jar"/>
-	<classpathentry kind="lib" path="C:/project/selfstudy/opac/mbopac/war/WEB-INF/lib/smartgwt.jar"/>
-	<classpathentry kind="lib" path="C:/project/selfstudy/opac/mbopac/war/WEB-INF/lib/ostermillerutils_1_07_00.jar"/>
+	<classpathentry kind="lib" path="/Users/tsp/Applications/eclipse-helios-3.6.2/plugins/com.google.appengine.eclipse.sdkbundle_1.4.3.v201103311225/appengine-java-sdk-1.4.3/lib/impl/appengine-api-stubs.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/objectify-2.2.3.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/ostermillerutils_1_07_00.jar"/>
+	<classpathentry kind="lib" path="/Users/tsp/Applications/eclipse-helios-3.6.2/plugins/org.junit_4.8.1.v4_8_1_v20100427-1100/junit.jar"/>
+	<classpathentry kind="lib" path="/Users/tsp/Applications/eclipse-helios-3.6.2/plugins/com.google.appengine.eclipse.sdkbundle_1.4.3.v201103311225/appengine-java-sdk-1.4.3/lib/testing/appengine-testing.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

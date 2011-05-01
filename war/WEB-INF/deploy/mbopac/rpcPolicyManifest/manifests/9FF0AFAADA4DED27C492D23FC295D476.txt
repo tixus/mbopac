@@ -1,0 +1,2 @@
+serviceClass: de.tixus.mb.opac.client.PersistenceService
+path: 72BF96310E4AD4B086BFA8D49E3F9CDE.gwt.rpc
